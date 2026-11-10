@@ -1,7 +1,5 @@
-import { Button, Title } from '@mantine/core'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
+import { LoginPage, RegisterPage } from '@/features/auth'
 
 function App() {
   return (
