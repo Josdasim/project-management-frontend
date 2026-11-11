@@ -4,13 +4,15 @@ import {
     Paper, PasswordInput, Stack, Text, TextInput
 } from "@mantine/core"
 import { useForm } from '@mantine/form'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { ApiError } from "@/shared/api/client"
 import { APP_NAME } from "@/shared/config"
 import { login } from '../api'
 
 function LoginPage(){
     const navigate = useNavigate()
+    const location = useLocation()
+    const registered = location.state?.registered
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -56,6 +58,11 @@ function LoginPage(){
             <Paper withBorder shadow="sm" p={30} mt={30} radius="md">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack>
+                        {registered && !error && (
+                            <Alert color="green">
+                                Cuenta creada correctamente. Ya puedes iniciar sesión.
+                            </Alert>
+                        )}
                         {error && <Alert color="red">{error}</Alert>}
 
                         <TextInput
