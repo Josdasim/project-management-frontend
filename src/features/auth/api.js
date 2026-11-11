@@ -10,3 +10,10 @@ export async function login(identifier, password){
     tokenStorage.set(tokens)
     return tokens
 }
+
+export async function register({ username, email, password, first_name, last_name }){
+    const body = { username, email, password, first_name }
+
+    if(last_name) body.last_name = last_name
+    return request('/auth/register', {method: 'POST', body, auth: false})
+}
