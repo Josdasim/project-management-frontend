@@ -1,2 +1,2 @@
 export const API_URL = import.meta.env.VITE_API_URL
-export const APP_NAME = 'Project Manegement'
+export const APP_NAME = 'Project Management'
