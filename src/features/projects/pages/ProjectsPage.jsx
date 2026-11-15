@@ -1,19 +1,14 @@
-import { Button, Container, Title } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
-import { tokenStorage } from '@/shared/api/tokenStorage'
+import { Button, Container, Title, Text } from '@mantine/core'
+import { useAuth } from '@/features/auth'
 
 function ProjectsPage(){
-    const navigate = useNavigate()
-
-    const handleLogout = () => {
-        tokenStorage.clear()
-        navigate('/login', { replace: true })
-    }
+    const { user, signOut } = useAuth()
 
     return(
         <Container my={40}>
             <Title order={2} mb="md">Proyectos</Title>
-            <Button variant="light" onClick={handleLogout}>Cerrar Sesión</Button>
+            <Text mb="mb">Sesión iniciada como {user?.username}</Text>
+            <Button variant="light" onClick={signOut}>Cerrar Sesión</Button>
         </Container>
     )
 }

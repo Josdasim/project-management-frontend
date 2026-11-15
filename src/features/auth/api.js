@@ -17,3 +17,15 @@ export async function register({ username, email, password, first_name, last_nam
     if(last_name) body.last_name = last_name
     return request('/auth/register', {method: 'POST', body, auth: false})
 }
+
+export function getMe(){
+    return request('/auth/me')
+}
+
+export function logout(refreshToken){
+    return request('/auth/logout', {
+        method: 'POST',
+        body: { refresh_token: refreshToken},
+        auth: false
+    })
+}
