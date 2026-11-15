@@ -1,2 +1,6 @@
 export { default as LoginPage } from './pages/LoginPage'
 export { default as RegisterPage } from './pages/RegisterPage'
+export { AuthProvider } from './AuthProvider'
+export { useAuth } from './useAuth'
+export { default as ProtectedRoute } from './components/ProtectedRoute'
+export { default as PublicOnlyRoute } from './components/PublicOnlyRoute'

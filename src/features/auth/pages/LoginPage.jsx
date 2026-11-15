@@ -4,13 +4,13 @@ import {
     Paper, PasswordInput, Stack, Text, TextInput
 } from "@mantine/core"
 import { useForm } from '@mantine/form'
-import { Link, useNavigate, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { ApiError } from "@/shared/api/client"
 import { APP_NAME } from "@/shared/config"
-import { login } from '../api'
+import { useAuth } from '../useAuth'
 
 function LoginPage(){
-    const navigate = useNavigate()
+    const { signIn } = useAuth()
     const location = useLocation()
     const registered = location.state?.registered
     const [error, setError] = useState(null)
@@ -30,8 +30,7 @@ function LoginPage(){
         setLoading(true)
 
         try{
-            await login(values.identifier.trim(), values.password)
-            navigate('/projects', { replace: true })
+            await signIn(values.identifier.trim(), values.password)
         } catch(e) {
             if(e instanceof ApiError && e.status === 401){
                 setError('Usuario o contraseña incorrectos')
@@ -48,7 +47,7 @@ function LoginPage(){
     }
 
     return (
-        <Container>
+        <Container size ={460} my={60}>
             <Title ta="center" order={2}>{APP_NAME}</Title>
             <Text c="dimmed" size ="sm" ta="center" mt={5}>
                 ¿Desea registrarse? {' '}
