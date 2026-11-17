@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { LoginPage, RegisterPage, ProtectedRoute, PublicOnlyRoute } from '@/features/auth'
 import { ProjectsPage } from '@/features/projects'
+import { ProfilePage } from '@/features/users'
+import AppLayout from './AppLayout'
 
 function App() {
   return (
@@ -12,7 +14,10 @@ function App() {
       </Route>
       
       <Route element = {<ProtectedRoute/>}>
-        <Route path="/projects" element={<ProjectsPage/>}/>
+        <Route element={<AppLayout/>}>
+          <Route path="/projects" element={<ProjectsPage/>}/>
+          <Route path="/profile" element={<ProfilePage/>}/>
+        </Route>
       </Route>
 
       <Route path="/" element={<Navigate to="/login" replace/>}/>

@@ -1,16 +1,8 @@
-import { Button, Container, Title, Text } from '@mantine/core'
-import { useAuth } from '@/features/auth'
+import { Title } from '@mantine/core'
 
 function ProjectsPage(){
-    const { user, signOut } = useAuth()
 
-    return(
-        <Container my={40}>
-            <Title order={2} mb="md">Proyectos</Title>
-            <Text mb="mb">Sesión iniciada como {user?.username}</Text>
-            <Button variant="light" onClick={signOut}>Cerrar Sesión</Button>
-        </Container>
-    )
+    return <Title order={2} mb="md">Proyectos</Title>
 }
 
 export default ProjectsPage
