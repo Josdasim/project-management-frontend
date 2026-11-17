@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ApiError } from "@/shared/api/client"
+import { ApiError, setSessionExpiredHandler } from "@/shared/api/client"
 import { tokenStorage } from "@/shared/api/tokenStorage"
 import { getMe, login, logout } from "./api"
 import { AuthContext } from "./authContext"
@@ -9,6 +9,14 @@ export function AuthProvider({ children }){
     const [status, setStatus] = useState(() => 
         tokenStorage.getAccess() ? 'loading' : 'anonymous'
     )
+
+    useEffect(() => {
+        setSessionExpiredHandler(() => {
+            setUser(null)
+            setStatus('anonymous')
+        })
+        return () => setSessionExpiredHandler(null)
+    }, [])
 
     useEffect(() => {
         if(!tokenStorage.getAccess()) return
