@@ -3,12 +3,14 @@ import { ApiError, setSessionExpiredHandler } from "@/shared/api/client"
 import { tokenStorage } from "@/shared/api/tokenStorage"
 import { getMe, login, logout } from "./api"
 import { AuthContext } from "./authContext"
+import ServerUnreachable from "./components/ServerUnreacheble"
 
 export function AuthProvider({ children }){
     const [user, setUser] = useState(null)
     const [status, setStatus] = useState(() => 
         tokenStorage.getAccess() ? 'loading' : 'anonymous'
     )
+    const [attempt, setAttempt] = useState(0)
 
     useEffect(() => {
         setSessionExpiredHandler(() => {
@@ -29,6 +31,10 @@ export function AuthProvider({ children }){
         })
         .catch((e) => {
             if(cancelled) return
+            if(e instanceof ApiError && (e.status === 0 || e.status >= 500)){
+                setStatus('unreachable')
+                return
+            }
             if(e instanceof ApiError && e.status === 401) tokenStorage.clear()
             setStatus('anonymous')
         })
@@ -36,7 +42,7 @@ export function AuthProvider({ children }){
         return () => {
             cancelled = true
         }
-    }, [])
+    }, [attempt])
 
     const signIn = async(identifier, password) => {
         await login(identifier, password)
@@ -54,6 +60,12 @@ export function AuthProvider({ children }){
         setUser(null)
         setStatus('anonymous')
     }
+
+    const retry = () => {
+        setStatus('loading')
+        setAttempt((n) => n+1)
+    }
+    if(status === 'unreachable') return <ServerUnreachable onRetry={retry}/>
 
     const value = { user, status, signIn, signOut }
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
