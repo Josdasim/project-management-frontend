@@ -4,8 +4,10 @@ import { tokenStorage } from "@/shared/api/tokenStorage"
 import { getMe, login, logout } from "./api"
 import { AuthContext } from "./authContext"
 import ServerUnreachable from "./components/ServerUnreacheble"
+import { useQueryClient } from "@tanstack/react-query"
 
 export function AuthProvider({ children }){
+    const queryClient = useQueryClient()
     const [user, setUser] = useState(null)
     const [status, setStatus] = useState(() => 
         tokenStorage.getAccess() ? 'loading' : 'anonymous'
@@ -14,11 +16,12 @@ export function AuthProvider({ children }){
 
     useEffect(() => {
         setSessionExpiredHandler(() => {
+            queryClient.clear()
             setUser(null)
             setStatus('anonymous')
         })
-        return () => setSessionExpiredHandler(null)
-    }, [])
+    return () => setSessionExpiredHandler(null)
+  }, [queryClient])
 
     useEffect(() => {
         if(!tokenStorage.getAccess()) return
@@ -57,6 +60,7 @@ export function AuthProvider({ children }){
             if(refresh) await logout(refresh)
         } catch {}
         tokenStorage.clear()
+        queryClient.clear()
         setUser(null)
         setStatus('anonymous')
     }
