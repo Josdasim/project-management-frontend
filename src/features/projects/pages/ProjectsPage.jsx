@@ -6,6 +6,10 @@ import {
 import { useDebouncedValue } from '@mantine/hooks'
 import ProjectCard from '../components/ProjectCard'
 import { useProjects } from '../hooks/useProjects'
+import { useDisclosure } from '@mantine/hooks'
+import CreateProjectForm from '../components/CreateProjectForm'
+import CreateProjectModal from '../components/CreateProjectModal'
+
 
 const PAGE_SIZE = 10
 
@@ -14,6 +18,12 @@ function ProjectsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebouncedValue(searchInput, 400)
   const search = debouncedSearch.trim()
+  const [modalOpened, modal] = useDisclosure(false)
+
+  const handleCreated = () => {
+    setSearchInput('')
+    setPage(1)
+  }
 
   const { data, isPending, isError, error, refetch, isPlaceholderData } =
     useProjects({ page, pageSize: PAGE_SIZE, search })
@@ -33,6 +43,7 @@ function ProjectsPage() {
             <Text c="dimmed" size="sm">
                 Proyectos donde eres propietario o participante.
             </Text>
+            <Button onClick={modal.open}>Nuevo proyecto</Button>
         </div>
       </Group>
 
@@ -56,11 +67,18 @@ function ProjectsPage() {
       )}
 
       {data && data.items.length === 0 && (
-        <Text c="dimmed">
-          {search
-            ? `Ningún proyecto coincide con «${search}».`
-            : 'Todavía no tienes proyectos.'}
-        </Text>
+        <Stack align="flex-start" gap="sm">
+          <Text c="dimmed">
+            {search
+              ? `Ningún proyecto coincide con <<${search}>>.`
+              : 'Todavia no tienes proyectos.'}
+          </Text>
+          {!search && (
+            <Button variant='light' onClick={modal.open}>
+              Crear mi primer proyecto
+            </Button>
+          )}
+        </Stack>
       )}
 
       {data && data.items.length > 0 && (
@@ -83,6 +101,12 @@ function ProjectsPage() {
           )}
         </>
       )}
+
+      <CreateProjectModal
+        opened={modalOpened}
+        onClose={modal.close}
+        onCreated={handleCreated}
+      />
     </Stack>
   )
 }

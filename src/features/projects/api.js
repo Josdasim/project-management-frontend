@@ -9,3 +9,11 @@ export function listProjects({ page = 1, pageSize = 20, search = ''} = {}){
     if(search) params.set('search', search)
     return request(`/projects?${params}`)
 }
+
+export function createProject({ name, description}){
+    const body = { name }
+    
+    if(description) body.description = description
+    
+    return request('/projects', { method: 'POST', body})
+}
