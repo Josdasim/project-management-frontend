@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Alert, Button, Center, Loader, Pagination,
-  SimpleGrid, Stack, Text, TextInput, Title,
+  SimpleGrid, Stack, Text, TextInput, Title, Group
 } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import ProjectCard from '../components/ProjectCard'
@@ -27,7 +27,14 @@ function ProjectsPage() {
 
   return (
     <Stack>
-      <Title order={2}>Proyectos</Title>
+      <Group justify="space-between" align="flex-start">
+        <div>
+            <Title order={2}>Mis proyectos</Title>
+            <Text c="dimmed" size="sm">
+                Proyectos donde eres propietario o participante.
+            </Text>
+        </div>
+      </Group>
 
       <TextInput
         placeholder="Buscar entre tus proyectos"
