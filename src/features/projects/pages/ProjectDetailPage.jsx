@@ -10,6 +10,7 @@ import { ROLE_LABELS, STATUS_LABELS } from '../constants'
 import { useProject } from '../hooks/useProject'
 import { canDeleteProject } from '../permissions'
 import MembersTab from '../components/MemberTab'
+import { TasksTab } from '@/features/tasks'
 
 const TABS = ['overview', 'members', 'tasks']
 
@@ -98,7 +99,7 @@ function ProjectDetailPage() {
         </Tabs.Panel>
 
         <Tabs.Panel value="tasks" pt="md">
-          <Text c="dimmed">Aquí irán las tareas.</Text>
+          <TasksTab project={project}/>
         </Tabs.Panel>
       </Tabs>
 
