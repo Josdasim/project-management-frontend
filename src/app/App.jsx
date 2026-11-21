@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { LoginPage, RegisterPage, ProtectedRoute, PublicOnlyRoute } from '@/features/auth'
-import { ProjectsPage } from '@/features/projects'
+import { ProjectsPage, ProjectDetailPage } from '@/features/projects'
 import { ProfilePage } from '@/features/users'
 import AppLayout from './AppLayout'
 
@@ -16,6 +16,7 @@ function App() {
       <Route element = {<ProtectedRoute/>}>
         <Route element={<AppLayout/>}>
           <Route path="/projects" element={<ProjectsPage/>}/>
+          <Route path="/projects/:projectId" element={<ProjectDetailPage/>}/>
           <Route path="/profile" element={<ProfilePage/>}/>
         </Route>
       </Route>
