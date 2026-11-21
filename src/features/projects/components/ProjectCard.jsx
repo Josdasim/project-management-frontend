@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Badge, Card, Group, Text, Stack } from '@mantine/core'
 import { formatDate } from '@/shared/format'
-import { ROLE_LABELS, STATUS_LABELS } from '../constans'
+import { ROLE_LABELS, STATUS_LABELS } from '../constants'
 
 function ProjectCard({ project }) {
   return (

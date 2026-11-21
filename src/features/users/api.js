@@ -9,3 +9,6 @@ export function updateProfile(changes){
     return request('/users/me', { method: 'PATCH', body: changes})
 }
 
+export function searchUserByUsername(username) {
+  return request(`/users/search?username=${encodeURIComponent(username)}`)
+}
