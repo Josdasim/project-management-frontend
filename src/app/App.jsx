@@ -7,22 +7,21 @@ import AppLayout from './AppLayout'
 function App() {
   return (
     <Routes>
-      
-      <Route element = {<PublicOnlyRoute/>}>
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/register" element={<RegisterPage/>}/>
+      <Route element={<PublicOnlyRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
-      
-      <Route element = {<ProtectedRoute/>}>
-        <Route element={<AppLayout/>}>
-          <Route path="/projects" element={<ProjectsPage/>}/>
-          <Route path="/projects/:projectId" element={<ProjectDetailPage/>}/>
-          <Route path="/profile" element={<ProfilePage/>}/>
+
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
 
-      <Route path="/" element={<Navigate to="/login" replace/>}/>
-      <Route path="*" element={<Navigate to="/login" replace/>}/>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
 }

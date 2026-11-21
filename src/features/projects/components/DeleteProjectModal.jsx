@@ -26,11 +26,11 @@ function DeleteProjectModal({ project, opened, onClose }) {
       })
       navigate('/projects', { replace: true })
     } catch (e) {
-      if(e instanceof ApiError && e.status === 403) {
+      if (e instanceof ApiError && e.status === 403) {
         setError('Solo el Propietario puede eliminar el proyecto.')
-      } else if(e instanceof ApiError && e.status === 404) {
+      } else if (e instanceof ApiError && e.status === 404) {
         setError('Este proyecto ya no está disponible.')
-      } else if(e instanceof ApiError && e.status === 0) {
+      } else if (e instanceof ApiError && e.status === 0) {
         setError(e.message)
       } else {
         setError('Ocurrió un error inesperado. Inténtalo de nuevo.')
@@ -43,9 +43,8 @@ function DeleteProjectModal({ project, opened, onClose }) {
       <Stack>
         {error && <Alert color="red">{error}</Alert>}
         <Text size="sm">
-          ¿Seguro que quieres eliminar «{project.name}»? Dejará de estar disponible
-          para ti y para todos sus miembros. Sus datos se conservan y el nombre
-          seguirá reservado.
+          ¿Seguro que quieres eliminar «{project.name}»? Dejará de estar disponible para ti y para todos sus miembros.
+          Sus datos se conservan y el nombre seguirá reservado.
         </Text>
         <Group justify="flex-end">
           <Button variant="subtle" color="gray" onClick={handleClose} disabled={deleteProject.isPending}>

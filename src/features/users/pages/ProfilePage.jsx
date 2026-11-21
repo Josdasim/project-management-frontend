@@ -34,11 +34,17 @@ function ProfilePage() {
       {error && (
         <Alert color="red" title="No se pudo cargar tu perfil">
           {error}
-          <Button mt="sm" size="xs" variant="light" onClick={retry}>Reintentar</Button>
+          <Button mt="sm" size="xs" variant="light" onClick={retry}>
+            Reintentar
+          </Button>
         </Alert>
       )}
 
-      {!profile && !error && <Center py="xl"><Loader /></Center>}
+      {!profile && !error && (
+        <Center py="xl">
+          <Loader />
+        </Center>
+      )}
       {profile && <ProfileForm profile={profile} />}
     </Stack>
   )
