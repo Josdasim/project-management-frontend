@@ -17,3 +17,18 @@ export function createProject({ name, description}){
     
     return request('/projects', { method: 'POST', body})
 }
+
+export function getProject(projectId) {
+  return request(`/projects/${encodeURIComponent(projectId)}`)
+}
+
+export function updateProject(projectId, changes) {
+  return request(`/projects/${encodeURIComponent(projectId)}`, {
+    method: 'PATCH',
+    body: changes,
+  })
+}
+
+export function deleteProject(projectId) {
+  return request(`/projects/${encodeURIComponent(projectId)}`, { method: 'DELETE' })
+}
