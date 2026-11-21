@@ -6,9 +6,10 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import DeleteProjectModal from '../components/DeleteProjectModal'
 import ProjectInfoCard from '../components/ProjectInfoCard'
-import { ROLE_LABELS, STATUS_LABELS } from '../constans'
+import { ROLE_LABELS, STATUS_LABELS } from '../constants'
 import { useProject } from '../hooks/useProject'
 import { canDeleteProject } from '../permissions'
+import MembersTab from '../components/MemberTab'
 
 const TABS = ['overview', 'members', 'tasks']
 
@@ -93,7 +94,7 @@ function ProjectDetailPage() {
         </Tabs.Panel>
 
         <Tabs.Panel value="members" pt="md">
-          <Text c="dimmed">Aquí irá la gestión de miembros.</Text>
+          <MembersTab project={project}/>
         </Tabs.Panel>
 
         <Tabs.Panel value="tasks" pt="md">
