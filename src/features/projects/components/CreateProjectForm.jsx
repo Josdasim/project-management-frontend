@@ -20,8 +20,7 @@ function CreateProjectForm({ onSuccess, onCancel }) {
         if (v.length > 100) return 'Maximo 100 caracteres'
         return null
       },
-      description: (value) =>
-        value.trim().length > 5000 ? 'Maximo 5000 caracteres' : null,
+      description: (value) => (value.trim().length > 5000 ? 'Maximo 5000 caracteres' : null),
     },
   })
 

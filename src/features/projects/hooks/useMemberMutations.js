@@ -15,7 +15,7 @@ export function useAddMember(projectId) {
   })
 }
 
-export function useChangeMemberRole(projectId){
+export function useChangeMemberRole(projectId) {
   const refresh = useRefreshMembers(projectId)
   return useMutation({
     mutationFn: ({ username, role }) => changeMemberRole(projectId, username, role),
@@ -31,7 +31,7 @@ export function useRemoveMember(projectId) {
   })
 }
 
-export function useLeaveProject(projectId){
+export function useLeaveProject(projectId) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => leaveProject(projectId),

@@ -1,8 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ActionIcon, Alert, Badge, Button, Center, Group, Loader, Menu,
-  Pagination, Select, Stack, Table, Text, TextInput,
+  ActionIcon,
+  Alert,
+  Badge,
+  Button,
+  Center,
+  Group,
+  Loader,
+  Menu,
+  Pagination,
+  Select,
+  Stack,
+  Table,
+  Text,
+  TextInput,
 } from '@mantine/core'
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
@@ -10,19 +22,18 @@ import { useAuth } from '@/features/auth'
 import ConfirmModal from '@/shared/components/ConfirmModal'
 import { ROLE_LABELS } from '../constants'
 import { useMembers } from '../hooks/useMembers'
-import {
-  useChangeMemberRole, useLeaveProject, useRemoveMember,
-} from '../hooks/useMemberMutations'
-import {
-  canAddMembers, canLeaveProject, canRemoveMember, roleChangeOptions,
-} from '../permissions.js'
+import { useChangeMemberRole, useLeaveProject, useRemoveMember } from '../hooks/useMemberMutations'
+import { canAddMembers, canLeaveProject, canRemoveMember, roleChangeOptions } from '../permissions.js'
 import { memberDisplayName, memberErrorText } from '../utils'
 import AddMemberModal from './AddMemberModal'
 
 const PAGE_SIZE = 10
-const ROLE_FILTER_DATA = Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }))
+const ROLE_FILTER_DATA = Object.entries(ROLE_LABELS).map(([value, label]) => ({
+  value,
+  label,
+}))
 
-function MembersTab({ project }){
+function MembersTab({ project }) {
   const navigate = useNavigate()
   const { user } = useAuth()
   const myUsername = user?.username?.toLowerCase()
@@ -38,10 +49,12 @@ function MembersTab({ project }){
   const [toRemove, setToRemove] = useState(null)
   const [actionError, setActionError] = useState(null)
 
-  const { data, isPending, isError, error, refetch, isPlaceholderData } = useMembers(
-    project.id,
-    { page, pageSize: PAGE_SIZE, search, role: roleFilter ?? '' },
-  )
+  const { data, isPending, isError, error, refetch, isPlaceholderData } = useMembers(project.id, {
+    page,
+    pageSize: PAGE_SIZE,
+    search,
+    role: roleFilter ?? '',
+  })
   const changeRole = useChangeMemberRole(project.id)
   const removeMember = useRemoveMember(project.id)
   const leaveProject = useLeaveProject(project.id)
@@ -74,7 +87,11 @@ function MembersTab({ project }){
         message: `Nuevo rol de ${memberDisplayName(member)}: ${ROLE_LABELS[role]}.`,
       })
     } catch (e) {
-      notifications.show({ color: 'red', title: 'No se pudo cambiar el rol', message: memberErrorText(e) })
+      notifications.show({
+        color: 'red',
+        title: 'No se pudo cambiar el rol',
+        message: memberErrorText(e),
+      })
     }
   }
 
@@ -140,12 +157,14 @@ function MembersTab({ project }){
             w={180}
           />
         </Group>
-        {canAddMembers(project.role) && (
-          <Button onClick={addModal.open}>Agregar miembro</Button>
-        )}
+        {canAddMembers(project.role) && <Button onClick={addModal.open}>Agregar miembro</Button>}
       </Group>
 
-      {isPending && <Center py="xl"><Loader /></Center>}
+      {isPending && (
+        <Center py="xl">
+          <Loader />
+        </Center>
+      )}
 
       {isError && (
         <Alert color="red" title="No se pudieron cargar los miembros">
@@ -190,7 +209,9 @@ function MembersTab({ project }){
                           {memberDisplayName(member)}
                           {isSelf && ' (tú)'}
                         </Text>
-                        <Text size="xs" c="dimmed">@{member.username}</Text>
+                        <Text size="xs" c="dimmed">
+                          @{member.username}
+                        </Text>
                       </Table.Td>
                       <Table.Td>
                         <Badge variant="light">{ROLE_LABELS[member.role] ?? member.role}</Badge>
@@ -232,9 +253,7 @@ function MembersTab({ project }){
             </Table>
           </Table.ScrollContainer>
 
-          {totalPages > 1 && (
-            <Pagination total={totalPages} value={page} onChange={setPage} />
-          )}
+          {totalPages > 1 && <Pagination total={totalPages} value={page} onChange={setPage} />}
         </>
       )}
 

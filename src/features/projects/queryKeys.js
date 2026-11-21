@@ -4,5 +4,5 @@ export const projectKeys = {
   list: (params) => ['projects', 'list', params],
   detail: (id) => ['projects', 'detail', id],
   members: (id) => ['projects', 'members', id],
-  membersList: (id, params) => ['projects', 'members', id, params]
+  membersList: (id, params) => ['projects', 'members', id, params],
 }

@@ -1,8 +1,5 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import {
-  Alert, Anchor, Badge, Button, Center, Group, Loader,
-  Paper, Stack, Tabs, Text, Title,
-} from '@mantine/core'
+import { Alert, Anchor, Badge, Button, Center, Group, Loader, Paper, Stack, Tabs, Text, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import DeleteProjectModal from '../components/DeleteProjectModal'
 import ProjectInfoCard from '../components/ProjectInfoCard'
@@ -24,19 +21,24 @@ function ProjectDetailPage() {
   const tab = TABS.includes(tabParam) ? tabParam : 'overview'
 
   const handleTabChange = (value) => {
-    setSearchParams(value === 'overview' ? {} : { tab: value }, { replace: true })
+    setSearchParams(value === 'overview' ? {} : { tab: value }, {
+      replace: true,
+    })
   }
 
-  if(isPending) return <Center py="xl"><Loader /></Center>
+  if (isPending)
+    return (
+      <Center py="xl">
+        <Loader />
+      </Center>
+    )
 
-  if(isError) {
+  if (isError) {
     if (error.status === 404 || error.status === 422) {
       return (
         <Stack align="flex-start">
           <Title order={3}>Proyecto no encontrado</Title>
-          <Text c="dimmed">
-            No existe, fue eliminado o no eres miembro de este proyecto.
-          </Text>
+          <Text c="dimmed">No existe, fue eliminado o no eres miembro de este proyecto.</Text>
           <Button component={Link} to="/projects" variant="light">
             Volver a mis proyectos
           </Button>
@@ -55,10 +57,14 @@ function ProjectDetailPage() {
 
   return (
     <Stack>
-      <Anchor component={Link} to="/projects" size="sm">← Mis proyectos</Anchor>
+      <Anchor component={Link} to="/projects" size="sm">
+        ← Mis proyectos
+      </Anchor>
 
       <Group justify="space-between" align="flex-start" wrap="nowrap">
-        <Title order={2} lineClamp={2}>{project.name}</Title>
+        <Title order={2} lineClamp={2}>
+          {project.name}
+        </Title>
         <Group gap="xs" wrap="nowrap">
           <Badge variant="light">{ROLE_LABELS[project.role] ?? project.role}</Badge>
           <Badge variant="dot">{STATUS_LABELS[project.status] ?? project.status}</Badge>
@@ -95,19 +101,15 @@ function ProjectDetailPage() {
         </Tabs.Panel>
 
         <Tabs.Panel value="members" pt="md">
-          <MembersTab project={project}/>
+          <MembersTab project={project} />
         </Tabs.Panel>
 
         <Tabs.Panel value="tasks" pt="md">
-          <TasksTab project={project}/>
+          <TasksTab project={project} />
         </Tabs.Panel>
       </Tabs>
 
-      <DeleteProjectModal
-        project={project}
-        opened={deleteOpened}
-        onClose={deleteModal.close}
-      />
+      <DeleteProjectModal project={project} opened={deleteOpened} onClose={deleteModal.close} />
     </Stack>
   )
 }

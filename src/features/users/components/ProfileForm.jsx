@@ -24,7 +24,6 @@ function ProfileForm({ profile }) {
     },
   })
 
-
   const showSaved = (p) => {
     const values = toFormValues(p)
     form.setValues(values)
@@ -84,7 +83,10 @@ function ProfileForm({ profile }) {
     }
   }
 
-  const fieldProps = { readOnly: !editing, variant: editing ? 'default' : 'filled' }
+  const fieldProps = {
+    readOnly: !editing,
+    variant: editing ? 'default' : 'filled',
+  }
 
   return (
     <Paper withBorder p="lg" radius="md" maw={560}>
@@ -92,7 +94,9 @@ function ProfileForm({ profile }) {
         <Stack>
           <div>
             <Title order={4}>Información personal</Title>
-            <Text c="dimmed" size="sm">Tus datos de cuenta.</Text>
+            <Text c="dimmed" size="sm">
+              Tus datos de cuenta.
+            </Text>
           </div>
 
           {error && <Alert color="red">{error}</Alert>}
@@ -106,16 +110,8 @@ function ProfileForm({ profile }) {
           />
 
           <Group grow align="flex-start">
-            <TextInput
-              label="Nombre"
-              {...fieldProps}
-              {...form.getInputProps('first_name')}
-            />
-            <TextInput
-              label="Apellido (opcional)"
-              {...fieldProps}
-              {...form.getInputProps('last_name')}
-            />
+            <TextInput label="Nombre" {...fieldProps} {...form.getInputProps('first_name')} />
+            <TextInput label="Apellido (opcional)" {...fieldProps} {...form.getInputProps('last_name')} />
           </Group>
 
           <Group justify="flex-end">
@@ -131,12 +127,7 @@ function ProfileForm({ profile }) {
                 >
                   Cancelar
                 </Button>
-                <Button
-                  key="save"
-                  type="submit"
-                  loading={saving}
-                  disabled={!form.isDirty()}
-                >
+                <Button key="save" type="submit" loading={saving} disabled={!form.isDirty()}>
                   Guardar cambios
                 </Button>
               </>

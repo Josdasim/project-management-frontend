@@ -8,7 +8,9 @@ export function useUpdateProject(projectId) {
     mutationFn: (changes) => updateProject(projectId, changes),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: projectKeys.lists })
-      return queryClient.invalidateQueries({ queryKey: projectKeys.detail(projectId) })
+      return queryClient.invalidateQueries({
+        queryKey: projectKeys.detail(projectId),
+      })
     },
   })
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, 
-    Group, Modal, Paper, Select, Stack, Text, TextInput } from '@mantine/core'
+import { Alert, Button, Group, Modal, Paper, Select, Stack, Text, TextInput } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { searchUserByUsername } from '@/features/users'
@@ -10,7 +9,7 @@ import { useAddMember } from '../hooks/useMemberMutations'
 import { assignableRoles } from '../permissions'
 import { memberDisplayName } from '../utils'
 
-function AddMemberForm({ projectId, actorRole, onAdded, onClose }){
+function AddMemberForm({ projectId, actorRole, onAdded, onClose }) {
   const roles = assignableRoles(actorRole)
   const [username, setUsername] = useState('')
   const [role, setRole] = useState('viewer')
@@ -81,18 +80,16 @@ function AddMemberForm({ projectId, actorRole, onAdded, onClose }){
         </Group>
       </form>
 
-      {notFound && (
-        <Alert color="yellow">
-          No encontramos un usuario activo con ese nombre de usuario.
-        </Alert>
-      )}
+      {notFound && <Alert color="yellow">No encontramos un usuario activo con ese nombre de usuario.</Alert>}
       {lookupError && <Alert color="red">{lookupError}</Alert>}
 
       {found && (
         <>
           <Paper withBorder p="sm" radius="md">
             <Text fw={500}>{memberDisplayName(found)}</Text>
-            <Text size="xs" c="dimmed">@{found.username}</Text>
+            <Text size="xs" c="dimmed">
+              @{found.username}
+            </Text>
           </Paper>
           <Select
             label="Rol en el proyecto"
@@ -121,12 +118,7 @@ function AddMemberForm({ projectId, actorRole, onAdded, onClose }){
 function AddMemberModal({ projectId, actorRole, opened, onClose, onAdded }) {
   return (
     <Modal opened={opened} onClose={onClose} title="Agregar miembro" centered>
-      <AddMemberForm
-        projectId={projectId}
-        actorRole={actorRole}
-        onAdded={onAdded}
-        onClose={onClose}
-      />
+      <AddMemberForm projectId={projectId} actorRole={actorRole} onAdded={onAdded} onClose={onClose} />
     </Modal>
   )
 }

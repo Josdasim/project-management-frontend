@@ -1,17 +1,23 @@
 import { useState } from 'react'
 import {
-  Alert, Badge, Button, Center, Group, Loader, Pagination,
-  Select, Stack, Table, Text, TextInput, UnstyledButton
+  Alert, Badge, Button, Center, Group, Loader,
+  Pagination, Select, Stack, Table, Text,
+  TextInput, UnstyledButton, Switch
 } from '@mantine/core'
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks'
 import {
-  PRIORITY_COLORS, PRIORITY_LABELS, PRIORITY_OPTIONS,
-  STATUS_COLORS, STATUS_LABELS, STATUS_OPTIONS,
+  PRIORITY_COLORS,
+  PRIORITY_LABELS,
+  PRIORITY_OPTIONS,
+  STATUS_COLORS,
+  STATUS_LABELS,
+  STATUS_OPTIONS,
 } from '../constants.js'
 import { useTasks } from '../hooks/useTasks'
 import { canCreateTask } from '../permissions'
 import CreateTaskModal from './CreateTaskModal'
 import TaskDrawer from './TaskDrawer.jsx'
+import { useAuth } from '@/features/auth'
 
 const PAGE_SIZE = 10
 
@@ -25,13 +31,20 @@ function TasksTab({ project }) {
   const [createOpened, createModal] = useDisclosure(false)
   const [selectedId, setSelectedId] = useState(null)
   const [drawerOpened, drawer] = useDisclosure(false)
+  const { user } = useAuth()
+  const me = user?.username ?? ''
+  const [ mine, setMine] = useState(false)
 
-  const { data, isPending, isError, error, refetch, isPlaceholderData } = useTasks(
-    project.id,
-    { page, pageSize: PAGE_SIZE, search, status: status ?? '', priority: priority ?? '' },
-  )
+  const { data, isPending, isError, error, refetch, isPlaceholderData } = useTasks(project.id, {
+    page,
+    pageSize: PAGE_SIZE,
+    search,
+    status: status ?? '',
+    priority: priority ?? '',
+    assignedTo: mine ? me: ''
+  })
 
-  const hasFilters = Boolean(search || status || priority)
+  const hasFilters = Boolean(search || status || priority || mine)
   const totalPages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1
 
   const handleSearchChange = (event) => {
@@ -52,6 +65,7 @@ function TasksTab({ project }) {
     setStatus(null)
     setPriority(null)
     setPage(1)
+    setMine(false)
   }
 
   const openTask = (id) => {
@@ -88,13 +102,24 @@ function TasksTab({ project }) {
             clearable
             w={150}
           />
+          <Switch
+            label="Solo mis tareas"
+            checked={mine}
+            onChange={(event) => {
+              setMine(event.currentTarget.checked)
+              setPage(1)
+            }}
+            pb={8}
+          />
         </Group>
-        {canCreateTask(project.role) && (
-          <Button onClick={createModal.open}>Nueva tarea</Button>
-        )}
+        {canCreateTask(project.role) && <Button onClick={createModal.open}>Nueva tarea</Button>}
       </Group>
 
-      {isPending && <Center py="xl"><Loader /></Center>}
+      {isPending && (
+        <Center py="xl">
+          <Loader />
+        </Center>
+      )}
 
       {isError && (
         <Alert color="red" title="No se pudieron cargar las tareas">
@@ -108,12 +133,12 @@ function TasksTab({ project }) {
       {data && data.items.length === 0 && (
         <Stack align="flex-start" gap="sm">
           <Text c="dimmed">
-            {hasFilters
-              ? 'Ninguna tarea coincide con los filtros.'
-              : 'Este proyecto todavía no tiene tareas.'}
+            {hasFilters ? 'Ninguna tarea coincide con los filtros.' : 'Este proyecto todavía no tiene tareas.'}
           </Text>
           {!hasFilters && canCreateTask(project.role) && (
-            <Button variant="light" onClick={createModal.open}>Crear la primera tarea</Button>
+            <Button variant="light" onClick={createModal.open}>
+              Crear la primera tarea
+            </Button>
           )}
         </Stack>
       )}
@@ -139,10 +164,14 @@ function TasksTab({ project }) {
                   <Table.Tr key={task.id}>
                     <Table.Td maw={320}>
                       <UnstyledButton onClick={() => openTask(task.id)} ta="left" maw="100%">
-                        <Text fw={500} lineClamp={1}>{task.title}</Text>
+                        <Text fw={500} lineClamp={1}>
+                          {task.title}
+                        </Text>
                       </UnstyledButton>
                       {task.description && (
-                        <Text size="xs" c="dimmed" lineClamp={1}>{task.description}</Text>
+                        <Text size="xs" c="dimmed" lineClamp={1}>
+                          {task.description}
+                        </Text>
                       )}
                     </Table.Td>
                     <Table.Td>
@@ -159,7 +188,9 @@ function TasksTab({ project }) {
                       {task.assignedTo ? (
                         <Text size="sm">@{task.assignedTo}</Text>
                       ) : (
-                        <Text size="sm" c="dimmed">Sin asignar</Text>
+                        <Text size="sm" c="dimmed">
+                          Sin asignar
+                        </Text>
                       )}
                     </Table.Td>
                   </Table.Tr>
@@ -168,9 +199,7 @@ function TasksTab({ project }) {
             </Table>
           </Table.ScrollContainer>
 
-          {totalPages > 1 && (
-            <Pagination total={totalPages} value={page} onChange={setPage} />
-          )}
+          {totalPages > 1 && <Pagination total={totalPages} value={page} onChange={setPage} />}
         </>
       )}
 
@@ -180,13 +209,7 @@ function TasksTab({ project }) {
         onClose={createModal.close}
         onCreated={handleCreated}
       />
-      <TaskDrawer
-        project={project}
-        taskId={selectedId}
-        opened={drawerOpened}
-        onClose={drawer.close}
-      />
-
+      <TaskDrawer project={project} taskId={selectedId} opened={drawerOpened} onClose={drawer.close} />
     </Stack>
   )
 }

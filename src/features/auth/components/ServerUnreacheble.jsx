@@ -8,7 +8,9 @@ function ServerUnreachable({ onRetry }) {
         <Text c="dimmed" size="sm" ta="center">
           Intentelo de nuevo mas tarde.
         </Text>
-        <Button mt="sm" onClick={onRetry}>Reintentar</Button>
+        <Button mt="sm" onClick={onRetry}>
+          Reintentar
+        </Button>
       </Stack>
     </Center>
   )

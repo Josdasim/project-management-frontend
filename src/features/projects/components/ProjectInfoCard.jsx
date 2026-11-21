@@ -9,8 +9,7 @@ import { useUpdateProject } from '../hooks/useUpdateProject'
 import { canEditProjectDescription, canEditProjectName } from '../permissions'
 
 function ProjectInfoView({ project, onEdit }) {
-  const canEdit =
-    canEditProjectName(project.role) || canEditProjectDescription(project.role)
+  const canEdit = canEditProjectName(project.role) || canEditProjectDescription(project.role)
 
   return (
     <Stack>
@@ -26,12 +25,16 @@ function ProjectInfoView({ project, onEdit }) {
         maxRows={10}
       />
       {project.created_at && (
-        <Text size="xs" c="dimmed">Creado el {formatDate(project.created_at)}</Text>
+        <Text size="xs" c="dimmed">
+          Creado el {formatDate(project.created_at)}
+        </Text>
       )}
 
       {canEdit ? (
         <Group justify="flex-end">
-          <Button variant="light" onClick={onEdit}>Editar</Button>
+          <Button variant="light" onClick={onEdit}>
+            Editar
+          </Button>
         </Group>
       ) : (
         <Text size="sm" c="dimmed">
@@ -59,8 +62,7 @@ function ProjectEditForm({ project, onDone }) {
         if (v.length > 100) return 'Máximo 100 caracteres'
         return null
       },
-      description: (value) =>
-        value.trim().length > 5000 ? 'Máximo 5000 caracteres' : null,
+      description: (value) => (value.trim().length > 5000 ? 'Máximo 5000 caracteres' : null),
     },
   })
 
@@ -69,8 +71,8 @@ function ProjectEditForm({ project, onDone }) {
     const name = values.name.trim()
     const description = values.description.trim()
 
-    if(nameEditable && name !== project.name) changes.name = name
-    if(description !== (project.description ?? '')) {
+    if (nameEditable && name !== project.name) changes.name = name
+    if (description !== (project.description ?? '')) {
       changes.description = description || null
     }
 
@@ -94,16 +96,16 @@ function ProjectEditForm({ project, onDone }) {
           'name',
           'Ya tienes un proyecto con ese nombre. Los proyectos eliminados también lo reservan.',
         )
-      } else if(e instanceof ApiError && e.status === 403) {
+      } else if (e instanceof ApiError && e.status === 403) {
         setError('No tienes permiso para hacer este cambio.')
-      } else if(e instanceof ApiError && e.status === 404) {
+      } else if (e instanceof ApiError && e.status === 404) {
         setError('Este proyecto ya no está disponible.')
-      } else if(e instanceof ApiError && e.status === 422) {
+      } else if (e instanceof ApiError && e.status === 422) {
         const fieldErrors = fieldErrorsFromApiError(e)
 
-        if(Object.keys(fieldErrors).length > 0) form.setErrors(fieldErrors)
+        if (Object.keys(fieldErrors).length > 0) form.setErrors(fieldErrors)
         else setError('Revisa los datos del formulario')
-      } else if(e instanceof ApiError && e.status === 0) {
+      } else if (e instanceof ApiError && e.status === 0) {
         setError(e.message)
       } else {
         setError('Ocurrió un error inesperado. Inténtalo de nuevo.')
@@ -118,11 +120,7 @@ function ProjectEditForm({ project, onDone }) {
 
         <TextInput
           label="Nombre"
-          description={
-            nameEditable
-              ? 'Hasta 100 caracteres.'
-              : 'Solo el Propietario puede cambiar el nombre.'
-          }
+          description={nameEditable ? 'Hasta 100 caracteres.' : 'Solo el Propietario puede cambiar el nombre.'}
           disabled={!nameEditable}
           data-autofocus={nameEditable || undefined}
           {...form.getInputProps('name')}
@@ -137,13 +135,7 @@ function ProjectEditForm({ project, onDone }) {
         />
 
         <Group justify="flex-end">
-          <Button
-            type="button"
-            variant="subtle"
-            color="gray"
-            onClick={onDone}
-            disabled={updateProject.isPending}
-          >
+          <Button type="button" variant="subtle" color="gray" onClick={onDone} disabled={updateProject.isPending}>
             Cancelar
           </Button>
           <Button type="submit" loading={updateProject.isPending} disabled={!form.isDirty()}>

@@ -20,8 +20,7 @@ function CreateTaskForm({ projectId, onSuccess, onCancel }) {
         if (v.length > 200) return 'Máximo 200 caracteres'
         return null
       },
-      description: (value) =>
-        value.trim().length > 5000 ? 'Máximo 5000 caracteres' : null,
+      description: (value) => (value.trim().length > 5000 ? 'Máximo 5000 caracteres' : null),
     },
   })
 
@@ -61,12 +60,7 @@ function CreateTaskForm({ projectId, onSuccess, onCancel }) {
       <Stack>
         {error && <Alert color="red">{error}</Alert>}
 
-        <TextInput
-          label="Título"
-          description="Hasta 200 caracteres."
-          data-autofocus
-          {...form.getInputProps('title')}
-        />
+        <TextInput label="Título" description="Hasta 200 caracteres." data-autofocus {...form.getInputProps('title')} />
         <Textarea
           label="Descripción (opcional)"
           autosize
@@ -74,12 +68,7 @@ function CreateTaskForm({ projectId, onSuccess, onCancel }) {
           maxRows={8}
           {...form.getInputProps('description')}
         />
-        <Select
-          label="Prioridad"
-          data={PRIORITY_OPTIONS}
-          allowDeselect={false}
-          {...form.getInputProps('priority')}
-        />
+        <Select label="Prioridad" data={PRIORITY_OPTIONS} allowDeselect={false} {...form.getInputProps('priority')} />
 
         <Group justify="flex-end">
           <Button type="button" variant="subtle" color="gray" onClick={onCancel}>

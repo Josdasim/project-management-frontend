@@ -3,5 +3,5 @@ export const taskKeys = {
   list: (projectId, params) => ['tasks', projectId, 'list', params],
   lists: (projectId) => ['tasks', projectId, 'list'],
   detail: (projectId, taskId) => ['tasks', projectId, 'detail', taskId],
-  assignable: (projectId) => ['tasks', projectId, 'assignable']
+  assignable: (projectId) => ['tasks', projectId, 'assignable'],
 }

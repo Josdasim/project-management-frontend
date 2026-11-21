@@ -2,10 +2,9 @@ import { request } from '@/shared/api/client'
 
 const tasksPath = (projectId) => `/projects/${encodeURIComponent(projectId)}/tasks`
 
-const usernameOf = (value) =>
-  (value && typeof value === 'object' ? value.username : value) ?? null
+const usernameOf = (value) => (value && typeof value === 'object' ? value.username : value) ?? null
 
-function normalizeTask(task){
+function normalizeTask(task) {
   return {
     id: task.id,
     title: task.title,
@@ -21,31 +20,34 @@ function normalizeTask(task){
 
 export async function listTasks(
   projectId,
-  { page = 1, pageSize = 20, status = '', priority = '', search = '' } = {},
+  { page = 1, pageSize = 20, status = '', priority = '', assignedTo = '', search = '' } = {},
 ) {
-  const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) })
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  })
   if (status) params.set('status', status)
   if (priority) params.set('priority', priority)
   if (search) params.set('search', search)
+  if (assignedTo) params.set('assigned_to', assignedTo)
   const data = await request(`${tasksPath(projectId)}?${params}`)
   return { ...data, items: data.items.map(normalizeTask) }
 }
 
-export async function createTask(projectId, { title, description, priority }){
+export async function createTask(projectId, { title, description, priority }) {
   const body = { title, priority }
-  if(description) body.description = description
+  if (description) body.description = description
   const task = await request(tasksPath(projectId), { method: 'POST', body })
   return normalizeTask(task)
 }
 
-const taskPath = (projectId, taskId) =>
-  `${tasksPath(projectId)}/${encodeURIComponent(taskId)}`
+const taskPath = (projectId, taskId) => `${tasksPath(projectId)}/${encodeURIComponent(taskId)}`
 
-export async function getTask(projectId, taskId){
+export async function getTask(projectId, taskId) {
   return normalizeTask(await request(taskPath(projectId, taskId)))
 }
 
-export async function changeTaskStatus(projectId, taskId, status){
+export async function changeTaskStatus(projectId, taskId, status) {
   const task = await request(`${taskPath(projectId, taskId)}/status`, {
     method: 'PATCH',
     body: { status },
@@ -53,7 +55,7 @@ export async function changeTaskStatus(projectId, taskId, status){
   return normalizeTask(task)
 }
 
-export async function assignTask(projectId, taskId, username){
+export async function assignTask(projectId, taskId, username) {
   const task = await request(`${taskPath(projectId, taskId)}/assignee`, {
     method: 'PATCH',
     body: { assigned_to: username },
@@ -65,4 +67,16 @@ export async function listAssignableMembers(projectId) {
   const params = new URLSearchParams({ page: '1', page_size: '100' })
   const data = await request(`/projects/${encodeURIComponent(projectId)}/members?${params}`)
   return data.items.filter((m) => m.role !== 'viewer')
+}
+
+export async function updateTask(projectId, taskId, changes) {
+  const task = await request(taskPath(projectId, taskId), {
+    method: 'PATCH',
+    body: changes,
+  })
+  return normalizeTask(task)
+}
+
+export function deleteTask(projectId, taskId) {
+  return request(taskPath(projectId, taskId), { method: 'DELETE' })
 }

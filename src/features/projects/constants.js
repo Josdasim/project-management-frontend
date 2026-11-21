@@ -6,6 +6,6 @@ export const ROLE_LABELS = {
 }
 
 export const STATUS_LABELS = {
-    active: 'Activo',
-    completed: 'Completado'
+  active: 'Activo',
+  completed: 'Completado',
 }

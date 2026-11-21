@@ -1,7 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import {
-  AppShell, Avatar, Button, Container, Group, Menu, Text, Title, UnstyledButton,
-} from '@mantine/core'
+import { AppShell, Avatar, Button, Container, Group, Menu, Text, Title, UnstyledButton } from '@mantine/core'
 import { useAuth } from '@/features/auth'
 import { APP_NAME } from '@/shared/config'
 
@@ -10,11 +8,7 @@ function AppLayout() {
   const { pathname } = useLocation()
 
   const navButton = (to, label) => (
-    <Button
-      component={Link}
-      to={to}
-      variant={pathname.startsWith(to) ? 'light' : 'subtle'}
-    >
+    <Button component={Link} to={to} variant={pathname.startsWith(to) ? 'light' : 'subtle'}>
       {label}
     </Button>
   )
@@ -41,9 +35,13 @@ function AppLayout() {
                 </UnstyledButton>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Item component={Link} to="/profile">Mi perfil</Menu.Item>
+                <Menu.Item component={Link} to="/profile">
+                  Mi perfil
+                </Menu.Item>
                 <Menu.Divider />
-                <Menu.Item color="red" onClick={signOut}>Cerrar sesión</Menu.Item>
+                <Menu.Item color="red" onClick={signOut}>
+                  Cerrar sesión
+                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Group>
