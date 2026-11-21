@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import {
   Alert, Badge, Button, Center, Group, Loader, Pagination,
-  Select, Stack, Table, Text, TextInput,
+  Select, Stack, Table, Text, TextInput, UnstyledButton
 } from '@mantine/core'
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks'
 import {
   PRIORITY_COLORS, PRIORITY_LABELS, PRIORITY_OPTIONS,
   STATUS_COLORS, STATUS_LABELS, STATUS_OPTIONS,
 } from '../constants.js'
-import { useTasks } from '../hooks/useTasks.js'
-import { canCreateTask } from '../permissions.js'
+import { useTasks } from '../hooks/useTasks'
+import { canCreateTask } from '../permissions'
 import CreateTaskModal from './CreateTaskModal'
+import TaskDrawer from './TaskDrawer.jsx'
 
 const PAGE_SIZE = 10
 
@@ -22,6 +23,8 @@ function TasksTab({ project }) {
   const [status, setStatus] = useState(null)
   const [priority, setPriority] = useState(null)
   const [createOpened, createModal] = useDisclosure(false)
+  const [selectedId, setSelectedId] = useState(null)
+  const [drawerOpened, drawer] = useDisclosure(false)
 
   const { data, isPending, isError, error, refetch, isPlaceholderData } = useTasks(
     project.id,
@@ -49,6 +52,11 @@ function TasksTab({ project }) {
     setStatus(null)
     setPriority(null)
     setPage(1)
+  }
+
+  const openTask = (id) => {
+    setSelectedId(id)
+    drawer.open()
   }
 
   return (
@@ -130,7 +138,9 @@ function TasksTab({ project }) {
                 {data.items.map((task) => (
                   <Table.Tr key={task.id}>
                     <Table.Td maw={320}>
-                      <Text fw={500} lineClamp={1}>{task.title}</Text>
+                      <UnstyledButton onClick={() => openTask(task.id)} ta="left" maw="100%">
+                        <Text fw={500} lineClamp={1}>{task.title}</Text>
+                      </UnstyledButton>
                       {task.description && (
                         <Text size="xs" c="dimmed" lineClamp={1}>{task.description}</Text>
                       )}
@@ -170,6 +180,13 @@ function TasksTab({ project }) {
         onClose={createModal.close}
         onCreated={handleCreated}
       />
+      <TaskDrawer
+        project={project}
+        taskId={selectedId}
+        opened={drawerOpened}
+        onClose={drawer.close}
+      />
+
     </Stack>
   )
 }

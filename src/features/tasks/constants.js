@@ -22,4 +22,19 @@ export const STATUS_COLORS = {
   completed: 'green',
   cancelled: 'red',
 }
+
 export const PRIORITY_COLORS = { low: 'gray', medium: 'blue', high: 'orange', urgent: 'red' }
+
+export const STATUS_TRANSITIONS = {
+    pending: [
+        { to: 'in_progress', label: 'Iniciar'},
+        { to: 'cancelled', label: 'Cancelar tarea', color: 'red'}
+    ],
+    in_progress: [
+        { to: 'completed', label: 'Completar', color: 'green'},
+        { to: 'pending', label: 'Volver a pendiente'},
+        { to: 'cancelled', label: 'Cancelar tarea', color: 'red'}
+    ],
+    completed: [{ to: 'in_progress', label: 'Reabrir'}],
+    cancelled: [{ to: 'pending', label: 'Reabrir'}]
+}
