@@ -37,3 +37,32 @@ export async function createTask(projectId, { title, description, priority }){
   const task = await request(tasksPath(projectId), { method: 'POST', body })
   return normalizeTask(task)
 }
+
+const taskPath = (projectId, taskId) =>
+  `${tasksPath(projectId)}/${encodeURIComponent(taskId)}`
+
+export async function getTask(projectId, taskId){
+  return normalizeTask(await request(taskPath(projectId, taskId)))
+}
+
+export async function changeTaskStatus(projectId, taskId, status){
+  const task = await request(`${taskPath(projectId, taskId)}/status`, {
+    method: 'PATCH',
+    body: { status },
+  })
+  return normalizeTask(task)
+}
+
+export async function assignTask(projectId, taskId, username){
+  const task = await request(`${taskPath(projectId, taskId)}/assignee`, {
+    method: 'PATCH',
+    body: { assigned_to: username },
+  })
+  return normalizeTask(task)
+}
+
+export async function listAssignableMembers(projectId) {
+  const params = new URLSearchParams({ page: '1', page_size: '100' })
+  const data = await request(`/projects/${encodeURIComponent(projectId)}/members?${params}`)
+  return data.items.filter((m) => m.role !== 'viewer')
+}
