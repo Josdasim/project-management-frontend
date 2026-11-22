@@ -150,7 +150,9 @@ function TasksTab({ project }) {
           </Text>
 
           <Table.ScrollContainer minWidth={560}>
-            <Table verticalSpacing="sm" style={{ opacity: isPlaceholderData ? 0.6 : 1 }}>
+            <Table verticalSpacing="sm" 
+            highlightOnHover
+            style={{ opacity: isPlaceholderData ? 0.6 : 1 }}>
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th>Tarea</Table.Th>
@@ -161,9 +163,12 @@ function TasksTab({ project }) {
               </Table.Thead>
               <Table.Tbody>
                 {data.items.map((task) => (
-                  <Table.Tr key={task.id}>
+                  <Table.Tr key={task.id} 
+                    onClick={() => openTask(task.id)}
+                    style={{cursor:'pointer'}}
+                  >
                     <Table.Td maw={320}>
-                      <UnstyledButton onClick={() => openTask(task.id)} ta="left" maw="100%">
+                      <UnstyledButton  ta="left" maw="100%">
                         <Text fw={500} lineClamp={1}>
                           {task.title}
                         </Text>
