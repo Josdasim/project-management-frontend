@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addMember, changeMemberRole, leaveProject, removeMember } from '../api'
+import { addMember, changeMemberRole, leaveProject, removeMember, transferOwnership } from '../api'
 import { projectKeys } from '../queryKeys'
 
 function useRefreshMembers(projectId) {
@@ -36,5 +36,24 @@ export function useLeaveProject(projectId) {
   return useMutation({
     mutationFn: () => leaveProject(projectId),
     onSuccess: () => queryClient.removeQueries({ queryKey: projectKeys.lists }),
+  })
+}
+
+export function useTransferOwnership(projectId) {
+  const queryClient = useQueryClient()
+
+  const refresh = () => 
+    Promise.all([
+      queryClient.invalidateQueries({queryKey: projectKeys.detail(projectId)}),
+      queryClient.invalidateQueries({queryKey: projectKeys.members(projectId)})
+    ]) 
+
+  return useMutation({
+    mutationFn: (username) => transferOwnership(projectId, username),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: projectKeys.lists})
+      return refresh()
+    },
+    onError: refresh
   })
 }
