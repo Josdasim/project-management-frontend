@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 import { Badge, Card, Group, Text, Stack } from '@mantine/core'
 import { formatDate } from '@/shared/format'
 import { ROLE_LABELS, STATUS_LABELS } from '../constants'
+import classes from './ProjectCard.module.css'
 
 function ProjectCard({ project }) {
   return (
     <Card
       component={Link}
       to={`/projects/${project.id}`}
+      className= {classes.card}
       withBorder
       radius="md"
       padding="md"
