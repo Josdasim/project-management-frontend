@@ -1,18 +1,10 @@
 import { useState } from 'react'
 import {
-  Title,
-  Alert,
-  Anchor,
-  Button,
-  Container,
-  Group,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
+  Title, Alert, Anchor, Button, Container,
+  Group, Paper, PasswordInput, Stack,
+  Text, TextInput,
 } from '@mantine/core'
-import { hasLength, isEmail, matches, useForm } from '@mantine/form'
+import { hasLength, isEmail, useForm } from '@mantine/form'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError } from '@/shared/api/client'
 import { fieldErrorsFromApiError } from '@/shared/api/errors'

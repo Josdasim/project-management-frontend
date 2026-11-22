@@ -1,22 +1,13 @@
 import { useState } from 'react'
 import {
-  Alert,
-  Button,
-  Center,
-  Loader,
-  Pagination,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-  Group,
+  Alert, Button, Center, Loader, Pagination,
+  SimpleGrid, Stack, Text, TextInput,
+  Title, Group,
 } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import ProjectCard from '../components/ProjectCard'
 import { useProjects } from '../hooks/useProjects'
 import { useDisclosure } from '@mantine/hooks'
-import CreateProjectForm from '../components/CreateProjectForm'
 import CreateProjectModal from '../components/CreateProjectModal'
 
 const PAGE_SIZE = 10
