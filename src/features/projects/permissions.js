@@ -28,3 +28,6 @@ export function canRemoveMember(actorRole, target, isSelf) {
 }
 
 export const canLeaveProject = (role) => role !== 'owner'
+
+export const canTransferTo = (actorRole, target, isSelf) =>
+  actorRole === 'owner' && !isSelf && target.role !== 'owner'

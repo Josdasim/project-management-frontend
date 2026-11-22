@@ -72,3 +72,10 @@ export function removeMember(projectId, username) {
 export function leaveProject(projectId) {
   return request(`${membersPath(projectId)}/me`, { method: 'DELETE' })
 }
+
+export function transferOwnership(projectId, username){
+  return request(`/projects/${encodeURIComponent(projectId)}/transfer-ownership`, {
+    method: 'POST',
+    body: {username}
+  })
+}

@@ -1,20 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ActionIcon,
-  Alert,
-  Badge,
-  Button,
-  Center,
-  Group,
-  Loader,
-  Menu,
-  Pagination,
-  Select,
-  Stack,
-  Table,
-  Text,
-  TextInput,
+  ActionIcon, Alert, Badge, Button, Center,
+  Group, Loader, Menu, Pagination, Select, Stack,
+  Table, Text, TextInput,
 } from '@mantine/core'
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
@@ -22,9 +11,9 @@ import { useAuth } from '@/features/auth'
 import ConfirmModal from '@/shared/components/ConfirmModal'
 import { ROLE_LABELS } from '../constants'
 import { useMembers } from '../hooks/useMembers'
-import { useChangeMemberRole, useLeaveProject, useRemoveMember } from '../hooks/useMemberMutations'
-import { canAddMembers, canLeaveProject, canRemoveMember, roleChangeOptions } from '../permissions.js'
-import { memberDisplayName, memberErrorText } from '../utils'
+import { useChangeMemberRole, useLeaveProject, useRemoveMember, useTransferOwnership } from '../hooks/useMemberMutations'
+import { canAddMembers, canLeaveProject, canRemoveMember, canTransferTo, roleChangeOptions } from '../permissions.js'
+import { memberDisplayName, memberErrorText, transferErrorText } from '../utils'
 import AddMemberModal from './AddMemberModal'
 
 const PAGE_SIZE = 10
@@ -48,6 +37,8 @@ function MembersTab({ project }) {
   const [leaveOpened, leaveModal] = useDisclosure(false)
   const [toRemove, setToRemove] = useState(null)
   const [actionError, setActionError] = useState(null)
+  const [toTransfer, setToTransfer] = useState(null)
+  const transferOwnership = useTransferOwnership(project.id)
 
   const { data, isPending, isError, error, refetch, isPlaceholderData } = useMembers(project.id, {
     page,
@@ -136,6 +127,27 @@ function MembersTab({ project }) {
     }
   }
 
+  const closeTransfer = ()  => {
+    setToTransfer(null)
+    setActionError(null)
+  }
+
+  const handleTransfer = async () => {
+    setActionError(null)
+
+    try {
+      await transferOwnership.mutateAsync(toTransfer.username)
+      notifications.show({
+        color: 'green',
+        title: 'Propiedad transferida',
+        message: `${memberDisplayName(toTransfer)} es ahora el Propietario. Tu rol pasó a Administrador`
+      })
+      setToTransfer(null)
+    } catch(e) {
+      console.log('error?')
+      setActionError(transferErrorText(e))
+    }
+  }
   return (
     <Stack>
       <Group justify="space-between" align="flex-end">
@@ -201,6 +213,7 @@ function MembersTab({ project }) {
                   const isSelf = member.username.toLowerCase() === myUsername
                   const roleOptions = roleChangeOptions(project.role, member)
                   const removable = canRemoveMember(project.role, member, isSelf)
+                  const transferable = canTransferTo(project.role, member, isSelf)
 
                   return (
                     <Table.Tr key={member.username}>
@@ -217,7 +230,7 @@ function MembersTab({ project }) {
                         <Badge variant="light">{ROLE_LABELS[member.role] ?? member.role}</Badge>
                       </Table.Td>
                       <Table.Td ta="right">
-                        {(roleOptions.length > 0 || removable) && (
+                        {(roleOptions.length > 0 || removable || transferable) && (
                           <Menu position="bottom-end">
                             <Menu.Target>
                               <ActionIcon
@@ -236,11 +249,21 @@ function MembersTab({ project }) {
                                   {ROLE_LABELS[r]}
                                 </Menu.Item>
                               ))}
-                              {roleOptions.length > 0 && removable && <Menu.Divider />}
+                              {transferable && (
+                                <>
+                                  <Menu.Divider />
+                                  <Menu.Item onClick={() => setToTransfer(member)}>
+                                    Transferir propiedad
+                                  </Menu.Item>
+                                </>
+                              )}
                               {removable && (
+                                <>
+                                <Menu.Divider />
                                 <Menu.Item color="red" onClick={() => setToRemove(member)}>
                                   Retirar del proyecto
                                 </Menu.Item>
+                                </>
                               )}
                             </Menu.Dropdown>
                           </Menu>
@@ -301,6 +324,22 @@ function MembersTab({ project }) {
         loading={leaveProject.isPending}
         error={actionError}
         onConfirm={handleLeave}
+      />
+
+      <ConfirmModal
+        opened={Boolean(toTransfer)}
+        onClose={closeTransfer}
+        title="Transferir propiedad"
+        message={
+          toTransfer
+            ? `¿Transferir ‹‹${project.name}›› a ${memberDisplayName(toTransfer)} (@${toTransfer.username})? Pasaras a ser Administrador y solo esa persona podrá cambiar el nombre del proyecto, eliminarlo o transferirlo. Para recuperarlo, tendría que transferirtelo nuevamente.`
+            : ''
+        }
+        confirmLabel="Transferir"
+        color="blue"
+        loading={transferOwnership.isPending}
+        error={actionError}
+        onConfirm={handleTransfer}
       />
     </Stack>
   )
