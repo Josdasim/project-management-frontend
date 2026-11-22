@@ -57,7 +57,9 @@ export function AuthProvider({ children }) {
     const refresh = tokenStorage.getRefresh()
     try {
       if (refresh) await logout(refresh)
-    } catch {}
+    } catch {
+      // No se tiene otra accion pendiente (por ahora) ya que igual se cierra la sesion aun si el servidor no responde
+    }
     tokenStorage.clear()
     queryClient.clear()
     setUser(null)

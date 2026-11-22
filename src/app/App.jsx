@@ -3,6 +3,7 @@ import { LoginPage, RegisterPage, ProtectedRoute, PublicOnlyRoute } from '@/feat
 import { ProjectsPage, ProjectDetailPage } from '@/features/projects'
 import { ProfilePage } from '@/features/users'
 import AppLayout from './AppLayout'
+import NotFoundPage from './NotFoundPage'
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
       </Route>
 
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<NotFoundPage/>} />
     </Routes>
   )
 }
