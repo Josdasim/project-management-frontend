@@ -2,10 +2,12 @@ import { Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/co
 import { useAuth } from '../useAuth.js'
 import { useDisclosure } from '@mantine/hooks'
 import ChangePasswordModal from './ChangePasswordModal.jsx'
+import ChangeEmailModal from './ChangeEmailModal.jsx'
 
 
 function AccountSecurityCard() {
   const { user } = useAuth()
+  const [emailOpened, emailModal] = useDisclosure(false)
   const [passwordOpened, passwordModal] = useDisclosure(false)
 
   return (
@@ -19,11 +21,12 @@ function AccountSecurityCard() {
         <TextInput label="Correo" value={user?.email ?? ''} readOnly variant="filled" />
 
         <Group justify="flex-end">
-          <Button variant="light" disabled>Cambiar correo</Button>
+          <Button variant="light" onClick={emailModal.open}>Cambiar correo</Button>
           <Button variant="light" onClick={passwordModal.open}>Cambiar contraseña</Button>
         </Group>
       </Stack>
       <>
+        <ChangeEmailModal opened={emailOpened} onClose={emailModal.close} />
         <ChangePasswordModal opened={passwordOpened} onClose={passwordModal.close}/>
       </>
     </Paper>
