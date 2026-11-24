@@ -20,9 +20,7 @@ export function transferErrorText(e){
     if (e.status === 403) {
       return 'Solo el Propietario puede transferir el proyecto.'
     }
-    if (e.status === 404){
-      return 'La persona o el proyecto ya no estan disponibles'
-    }
+    if (e.status === 404) return 'La persona o el proyecto ya no estan disponibles'
     if (e.status === 409) {
       return 'Esa persona ya tiene un proyecto con ese nombre. Cambia el nombre del proyecto en la pestaña de Resumen antes de transferir'
     }
@@ -31,4 +29,16 @@ export function transferErrorText(e){
     }
 
   }
+}
+
+export function trashErrorText(e) {
+  if (e instanceof ApiError) {
+    if (e.status === 0) return e.message
+    if (e.status === 403) {
+      return 'Solo el Propietario puede hacer esto con un proyecto eliminado.'
+    }
+    if (e.status === 404) return 'Este proyecto ya no está disponible.'
+    if (e.status === 409) return 'Este proyecto ya no está en la papelera.'
+  }
+  return 'Ocurrió un error inesperado. Inténtalo de nuevo.'
 }

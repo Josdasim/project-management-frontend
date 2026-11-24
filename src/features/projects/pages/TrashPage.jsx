@@ -5,6 +5,9 @@ import {
 } from '@mantine/core'
 import { formatDate } from '@/shared/format.js'
 import { useDeletedProjects } from '../hooks/useDeletedProjects.js'
+import { notifications } from '@mantine/notifications'
+import { useRestoreProject } from '../hooks/useRestoreProject.js'
+import { trashErrorText } from '../utils.js'
 
 const PAGE_SIZE = 10
 
@@ -14,6 +17,30 @@ function TrashPage() {
     useDeletedProjects({ page, pageSize: PAGE_SIZE })
 
   const totalPages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1
+
+  const restore = useRestoreProject()
+
+  const afterRemoval = () => {
+    if (data && data.items.length === 1 && page > 1) setPage(page - 1)
+  }
+
+  const handleRestore = async (project) => {
+    try {
+      await restore.mutateAsync(project.id)
+      notifications.show({
+        color: 'green',
+        title: 'Proyecto restaurado',
+        message: `<<${project.name}>> volvió a tu lista de proyectos.`,
+      })
+      afterRemoval()
+    } catch (e) {
+      notifications.show({
+        color: 'red',
+        title: 'No se pudo restaurar',
+        message: trashErrorText(e),
+      })
+    }
+  }
 
   return (
     <Stack>
@@ -46,6 +73,7 @@ function TrashPage() {
                 <Table.Tr>
                   <Table.Th>Proyecto</Table.Th>
                   <Table.Th>Eliminado el</Table.Th>
+                  <Table.Th/>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
@@ -58,6 +86,17 @@ function TrashPage() {
                       )}
                     </Table.Td>
                     <Table.Td>{formatDate(project.deleted_at)}</Table.Td>
+                                        <Table.Td ta="right">
+                      <Button
+                        size="xs"
+                        variant="light"
+                        loading={restore.isPending && restore.variables === project.id}
+                        disabled={restore.isPending}
+                        onClick={() => handleRestore(project)}
+                      >
+                        Restaurar
+                      </Button>
+                    </Table.Td>
                   </Table.Tr>
                 ))}
               </Table.Tbody>
