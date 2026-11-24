@@ -29,3 +29,17 @@ export function logout(refreshToken) {
     auth: false,
   })
 }
+
+export function changePassword({ currentPassword, newPassword }) {
+  return request('/auth/password', {
+    method: 'PUT',
+    body: { current_password: currentPassword, new_password: newPassword}
+  })
+}
+
+export function changeEmail({ newEmail, currentPassword }) {
+  return request('/auth/email' , {
+    method: 'PATCH',
+    body: { new_email: newEmail, current_password: currentPassword}
+  })
+}

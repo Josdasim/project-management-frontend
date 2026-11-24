@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Alert, Button, Center, Loader, Stack, Title } from '@mantine/core'
 import { getProfile } from '../api.js'
 import ProfileForm from '../components/ProfileForm'
+import { AccountSecurityCard } from '@/features/auth/index.js'
 
 function ProfilePage() {
   const [profile, setProfile] = useState(null)
@@ -45,7 +46,12 @@ function ProfilePage() {
           <Loader />
         </Center>
       )}
-      {profile && <ProfileForm profile={profile} />}
+      {profile && 
+        <>
+          <ProfileForm profile={profile} />
+          <AccountSecurityCard />
+        </>
+      }
     </Stack>
   )
 }
