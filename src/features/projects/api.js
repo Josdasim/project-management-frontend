@@ -90,3 +90,8 @@ export function restoreProject(projectId) {
     method: 'POST'
   })
 }
+
+export function deleteProjectPermanently(projectId) {
+  return request(`/projects/${encodeURIComponent(projectId)}/permanent`, 
+  { method: 'DELETE' })
+}

@@ -1,21 +1,23 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Alert, Anchor, Button, Center, Loader, Pagination, Stack, Table, Text, Title,
+  Alert, Anchor, Button, Center, Loader, Pagination, 
+  Stack, Table, Text, Title, Group
 } from '@mantine/core'
 import { formatDate } from '@/shared/format.js'
 import { useDeletedProjects } from '../hooks/useDeletedProjects.js'
 import { notifications } from '@mantine/notifications'
 import { useRestoreProject } from '../hooks/useRestoreProject.js'
 import { trashErrorText } from '../utils.js'
+import PurgeProjectModal from '../components/PurgeProjectModal.jsx'
 
 const PAGE_SIZE = 10
 
 function TrashPage() {
   const [page, setPage] = useState(1)
-  const { data, isPending, isError, error, refetch, isPlaceholderData } =
-    useDeletedProjects({ page, pageSize: PAGE_SIZE })
+  const { data, isPending, isError, error, refetch, isPlaceholderData } = useDeletedProjects({ page, pageSize: PAGE_SIZE })
 
+  const [toPurge, setToPurge] = useState(null) 
   const totalPages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1
 
   const restore = useRestoreProject()
@@ -67,7 +69,7 @@ function TrashPage() {
 
       {data && data.items.length > 0 && (
         <>
-          <Table.ScrollContainer minWidth={420}>
+          <Table.ScrollContainer minWidth={600}>
             <Table verticalSpacing="sm" style={{ opacity: isPlaceholderData ? 0.6 : 1 }}>
               <Table.Thead>
                 <Table.Tr>
@@ -86,16 +88,26 @@ function TrashPage() {
                       )}
                     </Table.Td>
                     <Table.Td>{formatDate(project.deleted_at)}</Table.Td>
-                                        <Table.Td ta="right">
-                      <Button
-                        size="xs"
-                        variant="light"
-                        loading={restore.isPending && restore.variables === project.id}
-                        disabled={restore.isPending}
-                        onClick={() => handleRestore(project)}
-                      >
-                        Restaurar
-                      </Button>
+                    <Table.Td ta="right">
+                      <Group gap="xs" justify="flex-end" wrap="nowrap">
+                        <Button
+                          size="xs"
+                          variant="light"
+                          loading={restore.isPending && restore.variables === project.id}
+                          disabled={restore.isPending}
+                          onClick={() => handleRestore(project)}
+                        >
+                          Restaurar
+                        </Button>
+                        <Button
+                          size="xs"
+                          variant="subtle"
+                          color="red"
+                          onClick={() => setToPurge(project)}
+                        >
+                          Eliminar definitivamente
+                        </Button>
+                      </Group>
                     </Table.Td>
                   </Table.Tr>
                 ))}
@@ -108,6 +120,14 @@ function TrashPage() {
           )}
         </>
       )}
+        <PurgeProjectModal
+        project={toPurge}
+        onClose={() => setToPurge(null)}
+        onDone={() => {
+          setToPurge(null)
+          afterRemoval()
+            }}
+        />
     </Stack>
   )
 }
