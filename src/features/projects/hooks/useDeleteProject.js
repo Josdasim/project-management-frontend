@@ -6,6 +6,9 @@ export function useDeleteProject() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: deleteProject,
-    onSuccess: () => queryClient.removeQueries({ queryKey: projectKeys.lists }),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: projectKeys.lists }),
+      queryClient.removeQueries({ queryKey: projectKeys.deletedLists})
+    }
   })
 }

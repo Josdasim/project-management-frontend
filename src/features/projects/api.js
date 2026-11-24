@@ -79,3 +79,19 @@ export function transferOwnership(projectId, username){
     body: {username}
   })
 }
+
+export function listDeletedProjects({ page=1, pageSize= 20} = {}) {
+  const params = new URLSearchParams({ page: String(page), page_size: String(pageSize)})
+  return request(`/projects/deleted?${params}`)
+}
+
+export function restoreProject(projectId) {
+  return request(`/projects/${encodeURIComponent(projectId)}/restore`, {
+    method: 'POST'
+  })
+}
+
+export function deleteProjectPermanently(projectId) {
+  return request(`/projects/${encodeURIComponent(projectId)}/permanent`, 
+  { method: 'DELETE' })
+}
