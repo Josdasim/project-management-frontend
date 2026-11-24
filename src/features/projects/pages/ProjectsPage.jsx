@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Alert, Button, Center, Loader, Pagination,
   SimpleGrid, Stack, Text, TextInput,
@@ -45,6 +46,9 @@ function ProjectsPage() {
           <Text c="dimmed" size="sm">
             Proyectos donde eres propietario o participante.
           </Text>
+          <Button component={Link} to="/projects/trash" variant= "subtle" color="gray">
+            Papelera
+          </Button>
           <Button onClick={modal.open}>Nuevo proyecto</Button>
         </div>
       </Group>

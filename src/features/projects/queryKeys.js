@@ -5,4 +5,6 @@ export const projectKeys = {
   detail: (id) => ['projects', 'detail', id],
   members: (id) => ['projects', 'members', id],
   membersList: (id, params) => ['projects', 'members', id, params],
+  deletedLists: ['projects', 'deleted'],
+  deleted: (params) => ['projects', 'deleted', params]
 }
