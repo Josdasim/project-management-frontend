@@ -72,6 +72,19 @@ export function AuthProvider({ children }) {
   }
   if (status === 'unreachable') return <ServerUnreachable onRetry={retry} />
 
-  const value = { user, status, signIn, signOut }
+  const endSession = () => {
+    tokenStorage.clear()
+    queryClient.clear()
+    setUser(null)
+    setStatus('anonymous')
+  }
+
+  const refreshUser = async () => {
+    setUser(await getMe())
+  }
+
+  const value = { user, status, signIn, signOut, endSession, refreshUser }
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
+
