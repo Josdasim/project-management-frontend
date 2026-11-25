@@ -43,3 +43,10 @@ export function changeEmail({ newEmail, currentPassword }) {
     body: { new_email: newEmail, current_password: currentPassword}
   })
 }
+
+export function deactivateAccount({ currentPassword }) {
+  return request('/auth/deactivate',{
+    method: 'POST',
+    body: { current_password: currentPassword }
+  }) 
+}
