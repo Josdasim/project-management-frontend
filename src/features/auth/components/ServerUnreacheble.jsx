@@ -2,7 +2,7 @@ import { Button, Center, Stack, Text, Title } from '@mantine/core'
 
 function ServerUnreachable({ onRetry }) {
   return (
-    <Center h="100vh">
+    <Center h="100vh" bg="var(--mantine-primary-color-0)">
       <Stack align="center" gap="xs">
         <Title order={3}>No se pudo conectar con el servidor</Title>
         <Text c="dimmed" size="sm" ta="center">

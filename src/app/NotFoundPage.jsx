@@ -3,9 +3,14 @@ import { Button, Center, Stack, Text, Title} from '@mantine/core'
 
 function NotFoundPage(){
     return (
-        <Center h={"100vh"}>
+        <Center h={"100vh"} bg="var(--mantine-primary-color-0)">
             <Stack align='center' gap="xs">
-                <Title order={2}>Página no encontrada</Title>
+                <Title order={1} fz={72} c="var(--mantine-primary-color-filled)">
+                    404
+                </Title>
+                <Title order={3}>
+                    Página no encontrada
+                </Title>
                 <Text c="dimmed" ta="center">
                     La dirección que buscas no existe o fue movida.
                 </Text>

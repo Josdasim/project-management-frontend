@@ -60,24 +60,26 @@ function LandingPage() {
         </Container>
       </Box>
 
-      <Container size="md">
-        <Stack align="center" ta="center" gap="md" py={{ base: 48, sm: 96 }}>
-          <Title order={1} style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)' }}>
-            Organiza tus proyectos, sus miembros y tus tareas en un solo lugar
-          </Title>
-          <Text c="dimmed" size="lg" maw={560}>
-            Crea proyectos, elige sus integrantes con roles y permisos, y sigue el avance de cada tarea.
-          </Text>
-          <Group mt="sm">
-            <Button component={Link} to="/register" size="lg">Crear cuenta</Button>
-            <Button component={Link} to="/login" size="lg" variant="default">
-              Iniciar sesión
-            </Button>
-          </Group>
-        </Stack>
-      </Container>
+      <Box bg="var(--mantine-primary-color-0)">
+        <Container size="md">
+            <Stack align="center" ta="center" gap="md" py={{ base: 48, sm: 96 }}>
+              <Title order={1} style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)' }}>
+                Organiza tus proyectos, sus miembros y tus tareas en un solo lugar
+              </Title>
+              <Text c="dimmed" size="lg" maw={560}>
+                Crea proyectos, elige sus integrantes con roles y permisos, y sigue el avance de cada tarea.
+              </Text>
+              <Group mt="sm">
+                <Button component={Link} to="/register" size="lg">Crear cuenta</Button>
+                <Button component={Link} to="/login" size="lg" variant="default">
+                  Iniciar sesión
+                </Button>
+              </Group>
+            </Stack>
+        </Container>
+      </Box>
 
-        <Box id="funciones" py={{ base: 48, sm: 80 }} bg="var(--mantine-color-default-hover)">
+      <Box id="funciones" py={{ base: 48, sm: 80 }}>
         <Container size="lg">
           <Stack gap="xl">
             <Stack gap="xs" ta="center" align="center">
@@ -95,30 +97,30 @@ function LandingPage() {
           </Stack>
         </Container>
       </Box>
-        <Box py={{ base: 48, sm: 80 }} bg="dark.8" c="white">
-            <Container size="lg">
-              <Stack gap="xl">
-                <Title order={2} ta="center">Cómo empezar</Title>
-                <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
-                  {STEPS.map((step, index) => (
-                    <Group
-                    key={step.title} gap="md"
-                    justify="center" align="center"
-                    wrap="nowrap">
-                        <ThemeIcon radius="x1" size="lg" variant="white"
-                            color="blue.6" style={{ flexShrink: 0}}
-                        > {index+1}</ThemeIcon>
-                        <Stack gap={4} maw={280}>
-                            <Text fw={600}>{step.title}</Text>
-                            <Text size="sm" c="gray.4">
-                                {step.text}
-                            </Text>
-                        </Stack>
-                    </Group>
-                  ))}
-                </SimpleGrid>
-              </Stack>
-            </Container>
+      <Box py={{ base: 48, sm: 80 }} bg="indigo.9" c="white">
+        <Container size="lg">
+          <Stack gap="xl">
+            <Title order={2} ta="center">Cómo empezar</Title>
+            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl">
+              {STEPS.map((step, index) => (
+                <Group
+                key={step.title} gap="md"
+                justify="center" align="center"
+                wrap="nowrap">
+                    <ThemeIcon radius="x1" size="lg" variant="white"
+                        color="blue.6" style={{ flexShrink: 0}}
+                    > {index+1}</ThemeIcon>
+                    <Stack gap={4} maw={280}>
+                        <Text fw={600}>{step.title}</Text>
+                        <Text size="sm" c="indigo.1">
+                            {step.text}
+                        </Text>
+                    </Stack>
+                </Group>
+              ))}
+            </SimpleGrid>
+          </Stack>
+        </Container>
       </Box>
 
       <Container size="lg" py={{ base: 48, sm: 80 }}>
