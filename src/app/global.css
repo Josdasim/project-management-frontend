@@ -1,0 +1,7 @@
+:root {
+    --app-bg: var(--mantine-color-sky-0);
+}
+
+:root[data-mantine-color-scheme='dark'] {
+    --app-bg: var(--mantine-color-dark-8);
+}

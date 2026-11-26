@@ -9,7 +9,7 @@ import { useDebouncedValue, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useAuth } from '@/features/auth'
 import ConfirmModal from '@/shared/components/ConfirmModal'
-import { ROLE_LABELS } from '../constants'
+import { ROLE_LABELS, ROLE_COLORS } from '../constants'
 import { useMembers } from '../hooks/useMembers'
 import { useChangeMemberRole, useLeaveProject, useRemoveMember, useTransferOwnership } from '../hooks/useMemberMutations'
 import { canAddMembers, canLeaveProject, canRemoveMember, canTransferTo, roleChangeOptions } from '../permissions.js'
@@ -227,7 +227,7 @@ function MembersTab({ project }) {
                         </Text>
                       </Table.Td>
                       <Table.Td>
-                        <Badge variant="light">{ROLE_LABELS[member.role] ?? member.role}</Badge>
+                        <Badge variant="light" color={ROLE_COLORS[member.role]}>{ROLE_LABELS[member.role] ?? member.role}</Badge>
                       </Table.Td>
                       <Table.Td ta="right">
                         {(roleOptions.length > 0 || removable || transferable) && (
@@ -336,7 +336,7 @@ function MembersTab({ project }) {
             : ''
         }
         confirmLabel="Transferir"
-        color="indigo"
+        color="sky"
         loading={transferOwnership.isPending}
         error={actionError}
         onConfirm={handleTransfer}

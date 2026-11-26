@@ -3,7 +3,7 @@ import { Alert, Anchor, Badge, Button, Center, Group, Loader, Paper, Stack, Tabs
 import { useDisclosure } from '@mantine/hooks'
 import DeleteProjectModal from '../components/DeleteProjectModal'
 import ProjectInfoCard from '../components/ProjectInfoCard'
-import { ROLE_LABELS, STATUS_LABELS } from '../constants'
+import { ROLE_LABELS, STATUS_LABELS, ROLE_COLORS } from '../constants'
 import { useProject } from '../hooks/useProject'
 import { canDeleteProject } from '../permissions'
 import MembersTab from '../components/MemberTab'
@@ -66,7 +66,7 @@ function ProjectDetailPage() {
           {project.name}
         </Title>
         <Group gap="xs" wrap="nowrap">
-          <Badge variant="light">{ROLE_LABELS[project.role] ?? project.role}</Badge>
+          <Badge variant="light" color={ROLE_COLORS[project.role]}>{ROLE_LABELS[project.role] ?? project.role}</Badge>
           <Badge variant="dot">{STATUS_LABELS[project.status] ?? project.status}</Badge>
         </Group>
       </Group>

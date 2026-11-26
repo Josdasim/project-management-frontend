@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import { Badge, Card, Group, Text, Stack } from '@mantine/core'
-import { formatDate } from '@/shared/format'
-import { ROLE_LABELS, STATUS_LABELS } from '../constants'
+import { Badge, Card, Divider, Group, Stack, Text } from '@mantine/core'
+import { formatDate } from '@/shared/format.js'
+import { ROLE_COLORS, ROLE_LABELS, STATUS_COLORS, STATUS_LABELS } from '../constants.js'
 import classes from './ProjectCard.module.css'
 
 function ProjectCard({ project }) {
@@ -9,7 +9,7 @@ function ProjectCard({ project }) {
     <Card
       component={Link}
       to={`/projects/${project.id}`}
-      className= {classes.card}
+      className={classes.card}
       withBorder
       radius="md"
       padding="md"
@@ -18,26 +18,30 @@ function ProjectCard({ project }) {
     >
       <Stack gap="xs" h="100%">
         <Group justify="space-between" wrap="nowrap">
-          <Badge variant="light" size="sm">
+          <Badge variant="light" size="sm" color={ROLE_COLORS[project.role]}>
             {ROLE_LABELS[project.role] ?? project.role}
           </Badge>
-          <Badge variant="dot" size="sm">
+          <Badge variant="dot" size="sm" color={STATUS_COLORS[project.status]}>
             {STATUS_LABELS[project.status] ?? project.status}
           </Badge>
         </Group>
 
-        <Text fw={600} size="lg" lineClamp={1}>
-          {project.name}
-        </Text>
+        <Text fw={600} size="lg" lineClamp={1}>{project.name}</Text>
 
-        <Text size="sm" c="dimmed" mt={4} lineClamp={2}>
+        <Text
+          size="sm"
+          c="dimmed"
+          fs={project.description ? undefined : 'italic'}
+          lineClamp={2}
+        >
           {project.description || 'Sin descripción'}
         </Text>
 
         {project.created_at && (
-          <Text size="xs" c="dimmed" mt="sm">
-            Creado el {formatDate(project.created_at)}
-          </Text>
+          <>
+            <Divider mt="auto" />
+            <Text size="xs" c="dimmed">Creado el {formatDate(project.created_at)}</Text>
+          </>
         )}
       </Stack>
     </Card>
