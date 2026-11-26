@@ -127,14 +127,14 @@ function LandingPage() {
           ta="center"
           gap="md"
           p={{ base: 'xl', sm: 56 }}
-          bg="blue.6"
+          bg="var(--mantine-primary-color-filled)"
           c="white"
           style={{ borderRadius: 'var(--mantine-radius-lg)' }}
         >
           <Title order={2}>¿Listo para empezar?</Title>
           <Text maw={480}>Crea tu cuenta y organiza tu primer proyecto.</Text>
           <Group>
-            <Button component={Link} to="/register" size="lg" variant="white" color="blue.6">
+            <Button component={Link} to="/register" size="lg" variant="white" color="indigo">
               Crear cuenta
             </Button>
             <Button component={Link} to="/login" size="lg" variant="outline" color="white">

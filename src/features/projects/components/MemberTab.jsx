@@ -336,7 +336,7 @@ function MembersTab({ project }) {
             : ''
         }
         confirmLabel="Transferir"
-        color="blue"
+        color="indigo"
         loading={transferOwnership.isPending}
         error={actionError}
         onConfirm={handleTransfer}
