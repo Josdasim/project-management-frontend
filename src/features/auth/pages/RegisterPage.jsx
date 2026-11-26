@@ -78,6 +78,7 @@ function RegisterPage() {
 
   return (
     <Container size={460} my={40}>
+      <Anchor component={Link} to="/" size="sm">← Volver al inicio</Anchor>
       <Title ta="center" order={2}>
         {APP_NAME}
       </Title>

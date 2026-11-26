@@ -43,6 +43,7 @@ function LoginPage() {
 
   return (
     <Container size={460} my={60}>
+      <Anchor component={Link} to="/" size="sm">← Volver al inicio</Anchor>
       <Title ta="center" order={2}>
         {APP_NAME}
       </Title>
