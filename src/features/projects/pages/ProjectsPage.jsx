@@ -39,13 +39,15 @@ function ProjectsPage() {
   const totalPages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1
 
   return (
-    <Stack>
+    <Stack mt={30}>
       <Group justify="space-between" align="flex-start">
         <div>
           <Title order={2}>Mis proyectos</Title>
           <Text c="dimmed" size="sm">
             Proyectos donde eres propietario o participante.
           </Text>
+        </div>
+        <div>
           <Button component={Link} to="/projects/trash" variant= "subtle" color="gray">
             Papelera
           </Button>

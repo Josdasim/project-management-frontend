@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Anchor, Box, Button, Container, Group, Stack,
     Card, SimpleGrid, Text, Title, ThemeIcon } from '@mantine/core'
 import { APP_NAME } from '@/shared/config.js'
+import ColorSchemeToggle from '@/shared/components/ColorSchemeToggle'
 
 function LandingPage() {
 
@@ -53,6 +54,7 @@ function LandingPage() {
               <Anchor href="#funciones" size="sm" visibleFrom="sm" mr="sm">
                 Funciones
               </Anchor>
+              <ColorSchemeToggle/>
               <Button component={Link} to="/login" variant="subtle">Iniciar sesión</Button>
               <Button component={Link} to="/register">Crear cuenta</Button>
             </Group>
@@ -60,7 +62,7 @@ function LandingPage() {
         </Container>
       </Box>
 
-      <Box bg="var(--mantine-primary-color-0)">
+      <Box bg="var(--app-bg)">
         <Container size="md">
             <Stack align="center" ta="center" gap="md" py={{ base: 48, sm: 96 }}>
               <Title order={1} style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)' }}>
@@ -97,7 +99,7 @@ function LandingPage() {
           </Stack>
         </Container>
       </Box>
-      <Box py={{ base: 48, sm: 80 }} bg="indigo.9" c="white">
+      <Box py={{ base: 48, sm: 80 }} bg="var(--mantine-color-sky-9)" c="white">
         <Container size="lg">
           <Stack gap="xl">
             <Title order={2} ta="center">Cómo empezar</Title>
@@ -112,7 +114,7 @@ function LandingPage() {
                     > {index+1}</ThemeIcon>
                     <Stack gap={4} maw={280}>
                         <Text fw={600}>{step.title}</Text>
-                        <Text size="sm" c="indigo.1">
+                        <Text size="sm" c="var(--mantine-color-sky-1)">
                             {step.text}
                         </Text>
                     </Stack>
@@ -136,7 +138,7 @@ function LandingPage() {
           <Title order={2}>¿Listo para empezar?</Title>
           <Text maw={480}>Crea tu cuenta y organiza tu primer proyecto.</Text>
           <Group>
-            <Button component={Link} to="/register" size="lg" variant="white" color="indigo">
+            <Button component={Link} to="/register" size="lg" variant="white" color="sky">
               Crear cuenta
             </Button>
             <Button component={Link} to="/login" size="lg" variant="outline" color="white">

@@ -3,7 +3,7 @@ import { Button, Center, Stack, Text, Title} from '@mantine/core'
 
 function NotFoundPage(){
     return (
-        <Center h={"100vh"} bg="var(--mantine-primary-color-0)">
+        <Center h={"100vh"} bg="var(--app-bg)">
             <Stack align='center' gap="xs">
                 <Title order={1} fz={72} c="var(--mantine-primary-color-filled)">
                     404
