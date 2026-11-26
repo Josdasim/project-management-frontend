@@ -56,61 +56,63 @@ function ProjectDetailPage() {
   }
 
   return (
-    <Stack>
-      <Anchor component={Link} to="/projects" size="sm">
-        ← Mis proyectos
-      </Anchor>
-
-      <Group justify="space-between" align="flex-start" wrap="nowrap">
-        <Title order={2} lineClamp={2}>
-          {project.name}
-        </Title>
-        <Group gap="xs" wrap="nowrap">
-          <Badge variant="light" color={ROLE_COLORS[project.role]}>{ROLE_LABELS[project.role] ?? project.role}</Badge>
-          <Badge variant="dot">{STATUS_LABELS[project.status] ?? project.status}</Badge>
+      <Center w="100%" inline={false}>
+        <Stack maw="720" w="100%" max="auto">
+        <Anchor component={Link} to="/projects" size="sm">
+          ← Mis proyectos
+        </Anchor>
+    
+        <Group justify="space-between" align="flex-start" wrap="nowrap">
+          <Title order={2} lineClamp={2}>
+            {project.name}
+          </Title>
+          <Group gap="xs" wrap="nowrap">
+            <Badge variant="light" color={ROLE_COLORS[project.role]}>{ROLE_LABELS[project.role] ?? project.role}</Badge>
+            <Badge variant="dot">{STATUS_LABELS[project.status] ?? project.status}</Badge>
+          </Group>
         </Group>
-      </Group>
-
-      <Tabs value={tab} onChange={handleTabChange} keepMounted={false}>
-        <Tabs.List>
-          <Tabs.Tab value="overview">Resumen</Tabs.Tab>
-          <Tabs.Tab value="members">Miembros</Tabs.Tab>
-          <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value="overview" pt="md">
-          <Stack>
-            <ProjectInfoCard project={project} />
-
-            {canDeleteProject(project.role) && (
-              <Paper withBorder p="lg" radius="md" maw={720}>
-                <Group justify="space-between" wrap="nowrap">
-                  <div>
-                    <Title order={5}>Eliminar proyecto</Title>
-                    <Text size="sm" c="dimmed">
-                      Deja de estar disponible para todos sus miembros.
-                    </Text>
-                  </div>
-                  <Button color="red" variant="light" onClick={deleteModal.open}>
-                    Eliminar
-                  </Button>
-                </Group>
-              </Paper>
-            )}
-          </Stack>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="members" pt="md">
-          <MembersTab project={project} />
-        </Tabs.Panel>
-
-        <Tabs.Panel value="tasks" pt="md">
-          <TasksTab project={project} />
-        </Tabs.Panel>
-      </Tabs>
-
-      <DeleteProjectModal project={project} opened={deleteOpened} onClose={deleteModal.close} />
-    </Stack>
+    
+        <Tabs value={tab} onChange={handleTabChange} keepMounted={false}>
+          <Tabs.List>
+            <Tabs.Tab value="overview">Resumen</Tabs.Tab>
+            <Tabs.Tab value="members">Miembros</Tabs.Tab>
+            <Tabs.Tab value="tasks">Tareas</Tabs.Tab>
+          </Tabs.List>
+    
+          <Tabs.Panel value="overview" pt="md">
+            <Stack>
+              <ProjectInfoCard project={project} />
+    
+              {canDeleteProject(project.role) && (
+                <Paper withBorder p="lg" radius="md" maw={720}>
+                  <Group justify="space-between" wrap="nowrap">
+                    <div>
+                      <Title order={5}>Eliminar proyecto</Title>
+                      <Text size="sm" c="dimmed">
+                        Deja de estar disponible para todos sus miembros.
+                      </Text>
+                    </div>
+                    <Button color="red" variant="light" onClick={deleteModal.open}>
+                      Eliminar
+                    </Button>
+                  </Group>
+                </Paper>
+              )}
+            </Stack>
+          </Tabs.Panel>
+            
+          <Tabs.Panel value="members" pt="md">
+            <MembersTab project={project} />
+          </Tabs.Panel>
+            
+          <Tabs.Panel value="tasks" pt="md">
+            <TasksTab project={project} />
+          </Tabs.Panel>
+        </Tabs>
+            
+        <DeleteProjectModal project={project} opened={deleteOpened} onClose={deleteModal.close} />
+      </Stack>
+    </Center>
   )
 }
 

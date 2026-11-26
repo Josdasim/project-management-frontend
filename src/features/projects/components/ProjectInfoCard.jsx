@@ -151,7 +151,7 @@ function ProjectInfoCard({ project }) {
   const [editing, setEditing] = useState(false)
 
   return (
-    <Paper withBorder p="lg" radius="md" maw={720}>
+    <Paper withBorder p="lg" radius="md" w="100%">
       <Stack>
         <Title order={4}>Información del proyecto</Title>
         {editing ? (

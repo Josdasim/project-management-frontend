@@ -236,10 +236,11 @@ function MembersTab({ project }) {
                               <ActionIcon
                                 variant="subtle"
                                 color="gray"
+                                size="lg"
                                 aria-label={`Acciones para ${member.username}`}
                                 disabled={changeRole.isPending}
                               >
-                                ⋯
+                                <Text size="x1" fw="800">⋯</Text>
                               </ActionIcon>
                             </Menu.Target>
                             <Menu.Dropdown>
