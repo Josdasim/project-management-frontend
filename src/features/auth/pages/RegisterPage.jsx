@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import {
-  Title, Alert, Anchor, Button, Container,
-  Group, Paper, PasswordInput, Stack,
+  Alert, Anchor, Button,
+  Group, PasswordInput, Stack,
   Text, TextInput,
 } from '@mantine/core'
 import { hasLength, isEmail, useForm } from '@mantine/form'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError } from '@/shared/api/client'
 import { fieldErrorsFromApiError } from '@/shared/api/errors'
-import { APP_NAME } from '@/shared/config'
 import { register } from '../api'
+import AuthLayout from '../components/AuthLayout'
 
 function RegisterPage() {
   const navigate = useNavigate()
@@ -77,70 +77,64 @@ function RegisterPage() {
   }
 
   return (
-    <Container size={460} my={40}>
-      <Anchor component={Link} to="/" size="sm">← Volver al inicio</Anchor>
-      <Title ta="center" order={2}>
-        {APP_NAME}
-      </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        ¿Ya tienes una cuenta?{' '}
-        <Anchor component={Link} to="/login" size="sm">
-          Iniciar Sesión
-        </Anchor>
-      </Text>
-
-      <Paper withBorder shadow="sm" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            {error && <Alert color="red">{error}</Alert>}
-
+    <AuthLayout
+      size={460}
+      subtitle={
+        <Text c="dimmed" size="sm">
+          ¿Ya tienes cuenta?{' '}
+          <Anchor component={Link} to="/login" size="sm">Inicia sesión</Anchor>
+        </Text>
+      }
+    >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          {error && <Alert color="red">{error}</Alert>}
+          <TextInput
+            label="Usuario"
+            description="3 a 30 caracteres: letras, números, _ . -"
+            autoComplete="username"
+            key={form.key('username')}
+            {...form.getInputProps('username')}
+          />
+          <TextInput
+            label="Correo electronico"
+            autoComplete="email"
+            key={form.key('email')}
+            {...form.getInputProps('email')}
+          />
+          <Group grow align="flex-start">
             <TextInput
-              label="Usuario"
-              description="3 a 30 caracteres: letras, números, _ . -"
-              autoComplete="username"
-              key={form.key('username')}
-              {...form.getInputProps('username')}
+              label="Nombre"
+              autoComplete="givin-name"
+              key={form.key('first_name')}
+              {...form.getInputProps('first_name')}
             />
             <TextInput
-              label="Correo electronico"
-              autoComplete="email"
-              key={form.key('email')}
-              {...form.getInputProps('email')}
+              label="Apellido (opcional)"
+              autoComplete="family-name"
+              key={form.key('last_name')}
+              {...form.getInputProps('last_name')}
             />
-            <Group grow align="flex-start">
-              <TextInput
-                label="Nombre"
-                autoComplete="givin-name"
-                key={form.key('first_name')}
-                {...form.getInputProps('first_name')}
-              />
-              <TextInput
-                label="Apellido (opcional)"
-                autoComplete="family-name"
-                key={form.key('last_name')}
-                {...form.getInputProps('last_name')}
-              />
-            </Group>
-            <PasswordInput
-              label="Contraseña"
-              description="Entre 12 y 128 caracteres"
-              autoComplete="new-password"
-              key={form.key('password')}
-              {...form.getInputProps('password')}
-            />
-            <PasswordInput
-              label="Confirmar contraseña"
-              autoComplete="new-password"
-              key={form.key('confirmPassword')}
-              {...form.getInputProps('confirmPassword')}
-            />
-            <Button type="submit" loading={loading}>
-              Crear Cuenta
-            </Button>
-          </Stack>
-        </form>
-      </Paper>
-    </Container>
+          </Group>
+          <PasswordInput
+            label="Contraseña"
+            description="Entre 12 y 128 caracteres"
+            autoComplete="new-password"
+            key={form.key('password')}
+            {...form.getInputProps('password')}
+          />
+          <PasswordInput
+            label="Confirmar contraseña"
+            autoComplete="new-password"
+            key={form.key('confirmPassword')}
+            {...form.getInputProps('confirmPassword')}
+          />
+          <Button type="submit" loading={loading}>
+            Crear Cuenta
+          </Button>
+        </Stack>
+      </form>
+    </AuthLayout>
   )
 }
 

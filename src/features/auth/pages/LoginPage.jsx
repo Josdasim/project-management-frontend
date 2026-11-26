@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Title, Alert, Anchor, Button, Container, Paper, PasswordInput, Stack, Text, TextInput } from '@mantine/core'
+import { Alert, Anchor, Button, PasswordInput, Stack, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { Link, useLocation } from 'react-router-dom'
 import { ApiError } from '@/shared/api/client'
-import { APP_NAME } from '@/shared/config'
 import { useAuth } from '../useAuth'
+import AuthLayout from '../components/AuthLayout'
 
 function LoginPage() {
   const { signIn } = useAuth()
@@ -41,46 +41,39 @@ function LoginPage() {
     }
   }
 
+
   return (
-    <Container size={460} my={60}>
-      <Anchor component={Link} to="/" size="sm">← Volver al inicio</Anchor>
-      <Title ta="center" order={2}>
-        {APP_NAME}
-      </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        ¿Desea registrarse?{' '}
-        <Anchor component={Link} to="/register" size="sm">
-          Registrate
-        </Anchor>
-      </Text>
+    <AuthLayout
+      subtitle={
+        <Text c="dimmed" size="sm">
+          ¿Desea registrarse?{' '}
+          <Anchor component={Link} to="/register" size="sm">Regístrate</Anchor>
+        </Text>
+      }
+    >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          {registered && !error && (
+            <Alert color="green">Cuenta creada correctamente. Ya puedes iniciar sesión.</Alert>
+          )}
+          {error && <Alert color="red">{error}</Alert>}
 
-      <Paper withBorder shadow="sm" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            {registered && !error && (
-              <Alert color="green">Cuenta creada correctamente. Ya puedes iniciar sesión.</Alert>
-            )}
-            {error && <Alert color="red">{error}</Alert>}
-
-            <TextInput
-              label="Usuario o Correo electronico"
-              autoComplete="username"
-              key={form.key('identifier')}
-              {...form.getInputProps('identifier')}
-            />
-            <PasswordInput
-              label="Contraseña"
-              autoComplete="current-password"
-              key={form.key('password')}
-              {...form.getInputProps('password')}
-            />
-            <Button type="submit" loading={loading}>
-              Iniciar sesión
-            </Button>
-          </Stack>
-        </form>
-      </Paper>
-    </Container>
+          <TextInput
+            label="Usuario o correo"
+            autoComplete="username"
+            key={form.key('identifier')}
+            {...form.getInputProps('identifier')}
+          />
+          <PasswordInput
+            label="Contraseña"
+            autoComplete="current-password"
+            key={form.key('password')}
+            {...form.getInputProps('password')}
+          />
+          <Button type="submit" loading={loading}>Iniciar sesión</Button>
+        </Stack>
+      </form>
+    </AuthLayout>
   )
 }
 
