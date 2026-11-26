@@ -29,30 +29,31 @@ function ProfilePage() {
   }
 
   return (
-    <Stack>
-      <Title order={2}>Mi perfil</Title>
+    <Center>
+      <Stack>
+        <Title order={2}>Mi perfil</Title>
+        {error && (
+          <Alert color="red" title="No se pudo cargar tu perfil">
+            {error}
+            <Button mt="sm" size="xs" variant="light" onClick={retry}>
+              Reintentar
+            </Button>
+          </Alert>
+        )}
 
-      {error && (
-        <Alert color="red" title="No se pudo cargar tu perfil">
-          {error}
-          <Button mt="sm" size="xs" variant="light" onClick={retry}>
-            Reintentar
-          </Button>
-        </Alert>
-      )}
-
-      {!profile && !error && (
-        <Center py="xl">
-          <Loader />
-        </Center>
-      )}
-      {profile && 
-        <>
-          <ProfileForm profile={profile} />
-          <AccountSecurityCard />
-        </>
-      }
-    </Stack>
+        {!profile && !error && (
+          <Center py="xl">
+            <Loader />
+          </Center>
+        )}
+        {profile && 
+          <>
+            <ProfileForm profile={profile} />
+            <AccountSecurityCard />
+          </>
+        }
+      </Stack>
+    </Center>
   )
 }
 

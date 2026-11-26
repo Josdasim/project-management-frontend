@@ -27,16 +27,8 @@ function AppLayout() {
               <Button
                 component={Link}
                 to="/projects"
-                variant="subtle"
+                variant="light"
                 color="white"
-                styles={{
-                  root: {
-                    backgroundColor: inProjects ? 'rgba(255, 255, 255, 0.18)' : 'transparent',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.28)',
-                    },
-                  },
-                }}
                 visibleFrom="sm"
               >
                 Proyectos
