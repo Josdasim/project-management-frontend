@@ -19,7 +19,9 @@ function AppLayout() {
         <Container size="lg" h="100%">
           <Group h="100%" justify="space-between">
             <Group>
-              <Title order={4}>{APP_NAME}</Title>
+              <Title order={4} c="var(--mantine-primary-color-filled)">
+                {APP_NAME}
+              </Title>
               {navButton('/projects', 'Proyectos')}
             </Group>
 
@@ -48,7 +50,7 @@ function AppLayout() {
         </Container>
       </AppShell.Header>
 
-      <AppShell.Main>
+      <AppShell.Main bg="var(--mantine-primary-color-0)">
         <Container size="lg">
           <Outlet />
         </Container>
